@@ -6,8 +6,11 @@
   <h4 class="text-l font-bold leading-tight mt-8 uppercase">
     Storm Surge Risk
   </h4>
-  <div class="font-bold text-xl text-high leading-tight mt-4 uppercase">
-    High
+  <div
+    class="font-bold text-xl leading-tight mt-4 uppercase"
+    [ngClass]="'text-' + (riskLevel$ | async)"
+  >
+    {{ riskLevel$ | async }}
   </div>
 
   <h4 class="text-l font-bold leading-tight mt-8 uppercase">
