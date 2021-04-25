@@ -4,11 +4,11 @@ import { LngLatLike } from 'mapbox-gl';
 
 const PH_DEFAULT_CENTER = { lat: 12.8797, lng: 121.774 };
 
-type PRAPage = 'base' | 'critical-facitilies' | HazardType;
+export type PRAPage = 'base' | 'critical-facitilies' | HazardType;
 
-type HazardType = 'flood' | 'landslide' | 'storm-surge';
+export type HazardType = 'flood' | 'landslide' | 'storm-surge';
 
-type RiskLevel = 'unavailable' | 'little' | 'low' | 'medium' | 'high';
+export type RiskLevel = 'unavailable' | 'little' | 'low' | 'medium' | 'high';
 
 type PRAState = {
   isLoading: boolean;
