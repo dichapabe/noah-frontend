@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FeatureCollection } from 'geojson';
+import { FeatureCollection, Feature } from 'geojson';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HazardType, PraStore, PRAPage, RiskLevel } from '../store/pra.store';
@@ -27,31 +27,13 @@ export class PraService {
       )
       .toPromise();
 
-    const riskLevelNum = parseInt(response.features[0].properties?.Var);
-    let riskLevel = 'unavailable';
-    switch (riskLevelNum) {
-      case 0:
-        riskLevel = 'little';
-        break;
-      case 1:
-        riskLevel = 'low';
-        break;
-      case 2:
-        riskLevel = 'medium';
-        break;
-      case 3:
-        riskLevel = 'high';
-        break;
-      default:
-        riskLevel = 'unavailable';
-        break;
-    }
+    const riskLevel = this._formatRiskLevel(response);
     this.praStore.patch(
       {
         isLoading: false,
         riskLevel: riskLevel as RiskLevel,
       },
-      'updated risk level'
+      `updated risk level -- ${hazardType}`
     );
   }
 
@@ -60,6 +42,55 @@ export class PraService {
 
     if (['flood', 'landslide', 'storm-surge'].includes(currentPage)) {
       this.assessRisk(currentPage as HazardType);
+    }
+  }
+
+  private _getRiskNum(feature: Feature): number {
+    const { properties } = feature;
+    if (!properties) {
+      return 0;
+    }
+
+    if ('Var' in properties) {
+      return parseInt(properties.Var);
+    }
+
+    if ('HZ' in properties) {
+      return parseInt(properties.HZ);
+    }
+
+    if ('HAZ' in properties) {
+      return parseFloat(properties.HAZ);
+    }
+
+    return 0;
+  }
+
+  private _computeAreaRiskNum(features: Array<Feature>): number {
+    const riskNumList = features.map((feature: Feature) =>
+      this._getRiskNum(feature)
+    );
+    return Math.max(...riskNumList);
+  }
+
+  private _formatRiskLevel(featureCollection: FeatureCollection): RiskLevel {
+    const riskLevelNum = this._computeAreaRiskNum(featureCollection.features);
+
+    switch (riskLevelNum) {
+      case 0:
+        return 'little';
+
+      case 1:
+        return 'low';
+
+      case 2:
+        return 'medium';
+
+      case 3:
+        return 'high';
+
+      default:
+        return 'unavailable';
     }
   }
 }
