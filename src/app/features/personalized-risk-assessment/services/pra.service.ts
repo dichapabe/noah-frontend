@@ -19,7 +19,7 @@ export class PraService {
   }
 
   async assessRisk(hazardType: HazardType): Promise<void> {
-    this.praStore.patch({ isLoading: true });
+    this.praStore.patch({ isLoading: true }, 'loading risk level...');
 
     const response: FeatureCollection = await this.http
       .get<FeatureCollection>(
@@ -38,7 +38,7 @@ export class PraService {
   }
 
   setCurrentPage(currentPage: PRAPage): void {
-    this.praStore.patch({ currentPage });
+    this.praStore.patch({ currentPage }, 'update current page');
 
     if (['flood', 'landslide', 'storm-surge'].includes(currentPage)) {
       this.assessRisk(currentPage as HazardType);
