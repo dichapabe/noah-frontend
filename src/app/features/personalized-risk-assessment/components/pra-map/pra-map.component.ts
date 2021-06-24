@@ -2,7 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MapService } from '@core/services/map.service';
 import { environment } from '@env/environment';
 import { PraService } from '@features/personalized-risk-assessment/services/pra.service';
-import { MARKERS } from '@shared/mocks/critical-facilities';
+import {
+  LEYTE_FIRESTATIONS,
+  LEYTE_HOSPITALS,
+  LEYTE_POLICESTATIONS,
+  LEYTE_SCHOOLS,
+} from '@shared/mocks/critical-facilities';
 import { LEYTE_FLOOD } from '@shared/mocks/flood';
 import { LEYTE_LANDSLIDE } from '@shared/mocks/landslide';
 import { LEYTE_STORM_SURGE } from '@shared/mocks/storm-surges';
@@ -39,7 +44,7 @@ export class PraMapComponent implements OnInit {
       .subscribe(() => {
         this.initGeocoder();
         this.initGeolocation();
-        this.initMarkers();
+        // this.initMarkers();
 
         this.initPageListener();
         this.initCenterListener();
@@ -50,6 +55,7 @@ export class PraMapComponent implements OnInit {
       .pipe(takeUntil(this._unsub))
       .subscribe(() => {
         this.initLayers();
+        this.initMarkers();
         this.hideAllLayers();
 
         const page = this.praService.currentPage;
@@ -69,7 +75,7 @@ export class PraMapComponent implements OnInit {
   }
 
   initCenterListener() {
-    this.praService.currentCoords$
+    this.praService.center$
       .pipe(distinctUntilChanged(), takeUntil(this._unsub))
       .subscribe((center) => {
         this.map.flyTo({
@@ -95,8 +101,6 @@ export class PraMapComponent implements OnInit {
         maxZoom: 13, // If you want your result not to go further than a specific zoom
       },
     });
-    this.map.getContainer().querySelector('.mapboxgl-ctrl-bottom-left');
-    this.map.addControl(geocoder);
     this.map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
     geocoder.on('result', (e) => {
@@ -107,7 +111,7 @@ export class PraMapComponent implements OnInit {
 
   initGeolocation() {
     this.geolocateControl = this.mapService.getNewGeolocateControl();
-    this.map.addControl(this.geolocateControl, 'bottom-right');
+    this.map.addControl(this.geolocateControl, 'top-right');
   }
 
   initGeolocationListener() {
@@ -166,9 +170,42 @@ export class PraMapComponent implements OnInit {
       .setLngLat(this.praService.currentCoords)
       .addTo(this.map);
 
-    MARKERS.forEach((m) =>
-      new mapboxgl.Marker().setLngLat(m.coords).addTo(this.map)
+    this.praService.currentCoords$
+      .pipe(takeUntil(this._unsub))
+      .subscribe((currentCoords) => {
+        this.centerMarker.setLngLat(currentCoords);
+      });
+
+    const _this = this;
+    this.map.loadImage('assets/map-sprites/hospital.png', (error, image) => {
+      if (error) throw error;
+      _this.map.addImage('icon-hospital', image);
+      _this.map.addLayer(LEYTE_HOSPITALS);
+    });
+
+    this.map.loadImage(
+      'assets/map-sprites/fire-station.png',
+      (error, image) => {
+        if (error) throw error;
+        _this.map.addImage('icon-firestation', image);
+        _this.map.addLayer(LEYTE_FIRESTATIONS);
+      }
     );
+
+    this.map.loadImage(
+      'assets/map-sprites/police-station.png',
+      (error, image) => {
+        if (error) throw error;
+        _this.map.addImage('icon-policestation', image);
+        _this.map.addLayer(LEYTE_POLICESTATIONS);
+      }
+    );
+
+    this.map.loadImage('assets/map-sprites/school.png', (error, image) => {
+      if (error) throw error;
+      _this.map.addImage('icon-school', image);
+      _this.map.addLayer(LEYTE_SCHOOLS);
+    });
   }
 
   showAllLayers() {
