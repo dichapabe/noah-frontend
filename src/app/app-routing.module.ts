@@ -29,6 +29,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'noah-playground',
+    loadChildren: () =>
+      import('@features/noah-playground/noah-playground.module').then(
+        (m) => m.NoahPlaygroundModule
+      ),
+  },
+  {
     path: '**',
     redirectTo: '',
   },
