@@ -1,5 +1,5 @@
-<h4 class="text-l font-bold leading-tight mt-8 uppercase">
-  Critical Facilities
+<h4 class="text-2xl font-bold leading-tight mt-6 pb-2">
+  Critical Facilities Near You
 </h4>
 
 <button
@@ -8,10 +8,10 @@
   (click)="focus(facility)"
 >
   <span class="w-1/6">
-    <img class="h-8 w-8" src="assets/map-sprites/{{ facility.type }}.png" />
+    <img class="h-auto" src="assets/map-sprites/{{ facility.type }}.png" />
   </span>
   <span class="w-5/6 pl-3">
-    <div class="text-sm">{{ facility.name }}</div>
+    <div class="text-sm font-bold">{{ facility.name }}</div>
     <small class="text-gray-500" *ngIf="facility.distance">
       {{ facility.distance | number: '1.1-2' }} km away</small
     >
