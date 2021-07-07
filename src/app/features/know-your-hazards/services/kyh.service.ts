@@ -44,10 +44,6 @@ export class KyhService {
     return this.kyhStore.state$.pipe(map((state) => state.currentPage));
   }
 
-  get riskLevel$(): Observable<RiskLevel> {
-    return this.kyhStore.state$.pipe(map((state) => state.riskLevel));
-  }
-
   get floodriskLevel$(): Observable<RiskLevel> {
     return this.kyhStore.state$.pipe(map((state) => state.floodriskLevel));
   }
@@ -93,7 +89,6 @@ export class KyhService {
     this.kyhStore.patch(
       {
         isLoading: false,
-        riskLevel: riskLevel as RiskLevel,
         floodriskLevel: floodriskLevel as RiskLevel,
         stormsurgeriskLevel: stormsurgeriskLevel as RiskLevel,
         landslideriskLevel: landslideriskLevel as RiskLevel,

@@ -11,7 +11,6 @@ import { Observable } from 'rxjs';
 export class KnowYourHazardsComponent implements OnInit {
   searchTerm: string;
   currentLocation$: Observable<string>;
-  riskLevel$: Observable<RiskLevel>;
   floodriskLevel$: Observable<RiskLevel>;
   stormsurgeriskLevel$: Observable<RiskLevel>;
   landslideriskLevel$: Observable<RiskLevel>;
@@ -20,7 +19,6 @@ export class KnowYourHazardsComponent implements OnInit {
   isStorm: boolean = false;
 
   constructor(private kyhService: KyhService) {
-    this.riskLevel$ = this.kyhService.riskLevel$;
     this.floodriskLevel$ = this.kyhService.floodriskLevel$;
     this.stormsurgeriskLevel$ = this.kyhService.stormsurgeriskLevel$;
     this.landslideriskLevel$ = this.kyhService.landslideriskLevel$;
