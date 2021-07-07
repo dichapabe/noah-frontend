@@ -65,6 +65,7 @@ export class HazardsService {
   }
 
   assessflood(payload: AssessmentPayload): Observable<FloodRiskLevel> {
+    debugger;
     return this.getFeatureInfo(payload).pipe(
       map((feature) => this._getFloodRiskLevel(feature)),
       take(1)
@@ -131,7 +132,7 @@ export class HazardsService {
     feature: FeatureCollection | null
   ): FloodRiskLevel {
     if (!feature) {
-      return 'low';
+      return 'little';
     }
 
     return this._formatFloodRiskLevel(feature);
@@ -246,9 +247,11 @@ export class HazardsService {
   private _formatFloodRiskLevel(
     featureCollection: FeatureCollection
   ): FloodRiskLevel {
-    const riskLevelNum = this._computeAreaRiskNum(featureCollection.features);
+    const floodriskLevelNum = this._computeAreaRiskNum(
+      featureCollection.features
+    );
 
-    switch (riskLevelNum) {
+    switch (floodriskLevelNum) {
       case 0:
         return 'little';
 
@@ -268,9 +271,11 @@ export class HazardsService {
   private _formatStormSurgeRiskLevel(
     featureCollection: FeatureCollection
   ): StormSurgeRiskLevel {
-    const riskLevelNum = this._computeAreaRiskNum(featureCollection.features);
+    const stormsurgeriskLevelNum = this._computeAreaRiskNum(
+      featureCollection.features
+    );
 
-    switch (riskLevelNum) {
+    switch (stormsurgeriskLevelNum) {
       case 0:
         return 'little';
 
@@ -290,9 +295,11 @@ export class HazardsService {
   private _formatLandslideRiskLevel(
     featureCollection: FeatureCollection
   ): LandslideRiskLevel {
-    const riskLevelNum = this._computeAreaRiskNum(featureCollection.features);
+    const landslideriskLevelNum = this._computeAreaRiskNum(
+      featureCollection.features
+    );
 
-    switch (riskLevelNum) {
+    switch (landslideriskLevelNum) {
       case 0:
         return 'little';
 

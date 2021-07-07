@@ -67,23 +67,34 @@ export class KyhService {
     return ['flood', 'landslide', 'storm-surge'];
   }
 
-  async assessRisk(hazardType: HazardType): Promise<void> {
+  async assessRisk(): Promise<void> {
     this.kyhStore.patch({ isLoading: true }, 'loading risk level...');
 
     const payload = {
       coords: this.kyhStore.state.center,
-      tilesetName: this._getTilesetName(hazardType),
+      tilesetName: this._getTilesetName('flood'),
+    };
+    const payloadStormSurge = {
+      coords: this.kyhStore.state.center,
+      tilesetName: this._getTilesetName('storm-surge'),
+    };
+    const payloadLandslide = {
+      coords: this.kyhStore.state.center,
+      tilesetName: this._getTilesetName('landslide'),
     };
 
+    console.log(payload, payloadStormSurge, payloadLandslide);
+
+    debugger;
     const riskLevel = await this.hazardsService.assess(payload).toPromise();
     const floodriskLevel = await this.hazardsService
       .assessflood(payload)
       .toPromise();
     const stormsurgeriskLevel = await this.hazardsService
-      .assessstormsurge(payload)
+      .assessstormsurge(payloadStormSurge)
       .toPromise();
     const landslideriskLevel = await this.hazardsService
-      .assesslandslide(payload)
+      .assesslandslide(payloadLandslide)
       .toPromise();
 
     this.kyhStore.patch(
@@ -94,23 +105,24 @@ export class KyhService {
         stormsurgeriskLevel: stormsurgeriskLevel as StormSurgeRiskLevel,
         landslideriskLevel: landslideriskLevel as LandslideRiskLevel,
       },
-      `updated risk level -- ${hazardType}`
+      `updated risk level --`
     );
   }
 
   init() {
-    this.currentPage$
-      .pipe(
-        distinctUntilChanged(),
-        tap((page) => {
-          if (this.isHazardPage(page)) {
-            const hazard = page as HazardType;
-            this.assessRisk(hazard);
-            this.setMapCenter(PH_DEFAULT_CENTER);
-          }
-        })
-      )
-      .subscribe();
+    this.assessRisk();
+    // this.currentPage$
+    //   .pipe(
+    //     distinctUntilChanged(),
+    //     tap((page) => {
+    //       if (this.isHazardPage(page)) {
+    //         const hazard = page as HazardType;
+    //         this.assessRisk(hazard);
+    //         this.setMapCenter(PH_DEFAULT_CENTER);
+    //       }
+    //     })
+    //   )
+    //   .subscribe();
   }
 
   isHazardPage(currentPage: KYHPage): boolean {
