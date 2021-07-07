@@ -12,34 +12,15 @@ export type HazardType = 'flood' | 'landslide' | 'storm-surge';
 
 export type RiskLevel = 'unavailable' | 'little' | 'low' | 'medium' | 'high';
 
-export type FloodRiskLevel =
-  | 'unavailable'
-  | 'little'
-  | 'low'
-  | 'medium'
-  | 'high';
-export type StormSurgeRiskLevel =
-  | 'unavailable'
-  | 'little'
-  | 'low'
-  | 'medium'
-  | 'high';
-export type LandslideRiskLevel =
-  | 'unavailable'
-  | 'little'
-  | 'low'
-  | 'medium'
-  | 'high';
-
 type KYHState = {
   isLoading: boolean;
   center: { lng: number; lat: number };
   currentCoords: { lng: number; lat: number };
   currentPage: KYHPage;
   riskLevel: RiskLevel;
-  floodriskLevel: FloodRiskLevel;
-  stormsurgeriskLevel: StormSurgeRiskLevel;
-  landslideriskLevel: LandslideRiskLevel;
+  floodriskLevel: RiskLevel;
+  stormsurgeriskLevel: RiskLevel;
+  landslideriskLevel: RiskLevel;
   currentLocation: string;
 };
 
