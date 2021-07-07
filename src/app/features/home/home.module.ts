@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeRoutingModule } from './home-routing.module';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
@@ -17,6 +17,8 @@ import { KnowYourHazardsModule } from '@features/know-your-hazards/know-your-haz
     PersonalizedRiskAssessmentModule,
     PlaygroundModule,
     KnowYourHazardsModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class HomeModule {}
