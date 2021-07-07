@@ -7,6 +7,9 @@ import {
   KyhStore,
   KYHPage,
   RiskLevel,
+  FloodRiskLevel,
+  StormSurgeRiskLevel,
+  LandslideRiskLevel,
   PH_DEFAULT_CENTER,
 } from '../store/kyh.store';
 import { HazardsService } from './hazards.service';
@@ -48,6 +51,18 @@ export class KyhService {
     return this.kyhStore.state$.pipe(map((state) => state.riskLevel));
   }
 
+  get floodriskLevel$(): Observable<FloodRiskLevel> {
+    return this.kyhStore.state$.pipe(map((state) => state.floodriskLevel));
+  }
+
+  get stormsurgeriskLevel$(): Observable<StormSurgeRiskLevel> {
+    return this.kyhStore.state$.pipe(map((state) => state.stormsurgeriskLevel));
+  }
+
+  get landslideriskLevel$(): Observable<LandslideRiskLevel> {
+    return this.kyhStore.state$.pipe(map((state) => state.landslideriskLevel));
+  }
+
   get hazardTypes(): string[] {
     return ['flood', 'landslide', 'storm-surge'];
   }
@@ -61,11 +76,23 @@ export class KyhService {
     };
 
     const riskLevel = await this.hazardsService.assess(payload).toPromise();
+    const floodriskLevel = await this.hazardsService
+      .assessflood(payload)
+      .toPromise();
+    const stormsurgeriskLevel = await this.hazardsService
+      .assessstormsurge(payload)
+      .toPromise();
+    const landslideriskLevel = await this.hazardsService
+      .assesslandslide(payload)
+      .toPromise();
 
     this.kyhStore.patch(
       {
         isLoading: false,
         riskLevel: riskLevel as RiskLevel,
+        floodriskLevel: floodriskLevel as FloodRiskLevel,
+        stormsurgeriskLevel: stormsurgeriskLevel as StormSurgeRiskLevel,
+        landslideriskLevel: landslideriskLevel as LandslideRiskLevel,
       },
       `updated risk level -- ${hazardType}`
     );

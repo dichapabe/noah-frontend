@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { KyhService } from '@features/know-your-hazards/services/kyh.service';
-import { RiskLevel } from '@features/know-your-hazards/store/kyh.store';
+import {
+  RiskLevel,
+  FloodRiskLevel,
+  StormSurgeRiskLevel,
+  LandslideRiskLevel,
+} from '@features/know-your-hazards/store/kyh.store';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -12,12 +17,18 @@ export class KnowYourHazardsComponent implements OnInit {
   searchTerm: string;
   currentLocation$: Observable<string>;
   riskLevel$: Observable<RiskLevel>;
+  floodriskLevel$: Observable<FloodRiskLevel>;
+  stormsurgeriskLevel$: Observable<StormSurgeRiskLevel>;
+  landslideriskLevel$: Observable<LandslideRiskLevel>;
   isFlood: boolean = false;
   islandSlide: boolean = false;
   isStorm: boolean = false;
 
   constructor(private kyhService: KyhService) {
     this.riskLevel$ = this.kyhService.riskLevel$;
+    this.floodriskLevel$ = this.kyhService.floodriskLevel$;
+    this.stormsurgeriskLevel$ = this.kyhService.stormsurgeriskLevel$;
+    this.landslideriskLevel$ = this.kyhService.landslideriskLevel$;
   }
 
   ngOnInit(): void {

@@ -9,7 +9,12 @@ import { Feature, FeatureCollection } from 'geojson';
 import { LngLat, LngLatLike } from 'mapbox-gl';
 import { Observable, of } from 'rxjs';
 import { catchError, map, take, tap } from 'rxjs/operators';
-import { RiskLevel } from '../store/kyh.store';
+import {
+  RiskLevel,
+  FloodRiskLevel,
+  StormSurgeRiskLevel,
+  LandslideRiskLevel,
+} from '../store/kyh.store';
 
 type AssessmentPayload = {
   coords: { lat: number; lng: number };
@@ -59,6 +64,29 @@ export class HazardsService {
     );
   }
 
+  assessflood(payload: AssessmentPayload): Observable<FloodRiskLevel> {
+    return this.getFeatureInfo(payload).pipe(
+      map((feature) => this._getFloodRiskLevel(feature)),
+      take(1)
+    );
+  }
+
+  assessstormsurge(
+    payload: AssessmentPayload
+  ): Observable<StormSurgeRiskLevel> {
+    return this.getFeatureInfo(payload).pipe(
+      map((feature) => this._getStormSurgeRiskLevel(feature)),
+      take(1)
+    );
+  }
+
+  assesslandslide(payload: AssessmentPayload): Observable<LandslideRiskLevel> {
+    return this.getFeatureInfo(payload).pipe(
+      map((feature) => this._getLandslideRiskLevel(feature)),
+      take(1)
+    );
+  }
+
   getCriticalFacilities(coords: { lat: number; lng: number }) {
     const payload = {
       coords,
@@ -98,6 +126,33 @@ export class HazardsService {
     }
 
     return this._formatRiskLevel(feature);
+  }
+  private _getFloodRiskLevel(
+    feature: FeatureCollection | null
+  ): FloodRiskLevel {
+    if (!feature) {
+      return 'low';
+    }
+
+    return this._formatFloodRiskLevel(feature);
+  }
+  private _getStormSurgeRiskLevel(
+    feature: FeatureCollection | null
+  ): StormSurgeRiskLevel {
+    if (!feature) {
+      return 'low';
+    }
+
+    return this._formatStormSurgeRiskLevel(feature);
+  }
+  private _getLandslideRiskLevel(
+    feature: FeatureCollection | null
+  ): LandslideRiskLevel {
+    if (!feature) {
+      return 'low';
+    }
+
+    return this._formatLandslideRiskLevel(feature);
   }
 
   private _getCriticalFacility(
@@ -169,6 +224,72 @@ export class HazardsService {
   }
 
   private _formatRiskLevel(featureCollection: FeatureCollection): RiskLevel {
+    const riskLevelNum = this._computeAreaRiskNum(featureCollection.features);
+
+    switch (riskLevelNum) {
+      case 0:
+        return 'little';
+
+      case 1:
+        return 'low';
+
+      case 2:
+        return 'medium';
+
+      case 3:
+        return 'high';
+
+      default:
+        return 'low';
+    }
+  }
+  private _formatFloodRiskLevel(
+    featureCollection: FeatureCollection
+  ): FloodRiskLevel {
+    const riskLevelNum = this._computeAreaRiskNum(featureCollection.features);
+
+    switch (riskLevelNum) {
+      case 0:
+        return 'little';
+
+      case 1:
+        return 'low';
+
+      case 2:
+        return 'medium';
+
+      case 3:
+        return 'high';
+
+      default:
+        return 'low';
+    }
+  }
+  private _formatStormSurgeRiskLevel(
+    featureCollection: FeatureCollection
+  ): StormSurgeRiskLevel {
+    const riskLevelNum = this._computeAreaRiskNum(featureCollection.features);
+
+    switch (riskLevelNum) {
+      case 0:
+        return 'little';
+
+      case 1:
+        return 'low';
+
+      case 2:
+        return 'medium';
+
+      case 3:
+        return 'high';
+
+      default:
+        return 'low';
+    }
+  }
+  private _formatLandslideRiskLevel(
+    featureCollection: FeatureCollection
+  ): LandslideRiskLevel {
     const riskLevelNum = this._computeAreaRiskNum(featureCollection.features);
 
     switch (riskLevelNum) {

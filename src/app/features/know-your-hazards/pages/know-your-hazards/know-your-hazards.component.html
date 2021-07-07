@@ -99,10 +99,11 @@
                     Flood Hazard Level
                   </div>
                   <p
-                    class="text-xl text-red-500 leading-none mt-1"
+                    class="uppercase text-xl leading-none mt-1"
                     role="button"
+                    [ngClass]="'text-' + (floodriskLevel$ | async)"
                   >
-                    HIGH
+                    {{ floodriskLevel$ | async }}
                   </p>
                 </div>
               </div>
@@ -161,10 +162,11 @@
                     Landslide Hazard Level
                   </div>
                   <p
-                    class="text-xl text-yellow-300 leading-none mt-1 uppercase"
+                    class="uppercase text-xl leading-none mt-1"
                     role="button"
+                    [ngClass]="'text-' + (landslideriskLevel$ | async)"
                   >
-                    Medium
+                    {{ landslideriskLevel$ | async }}
                   </p>
                 </div>
               </div>
@@ -223,10 +225,11 @@
                     Storm Surge Hazard Level
                   </div>
                   <p
-                    class="text-xl text-yellow-600 leading-none mt-1"
+                    class="uppercase text-xl leading-none mt-1"
                     role="button"
+                    [ngClass]="'text-' + (stormsurgeriskLevel$ | async)"
                   >
-                    LOW
+                    {{ stormsurgeriskLevel$ | async }}
                   </p>
                 </div>
               </div>
