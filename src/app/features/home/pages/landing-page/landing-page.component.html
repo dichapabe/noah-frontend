@@ -25,9 +25,9 @@
                     class="w-9/12 m-auto py-16 min-h-screen flex items-center justify-center z-50"
                   >
                     <div
-                      class="bg-white shadow overflow-hidden sm:rounded-lg pb-8"
+                      class="bg-white shadow overflow-hidden rounded-lg pb-8"
                     >
-                      <div class="border-t border-gray-200 text-center pt-14">
+                      <div class="border-t border-gray-200 text-center pt-16">
                         <h1 class="text-4xl font-bold pb-8">
                           Know Your Hazards
                         </h1>
@@ -129,7 +129,7 @@
                           <div class="mt-4 md:mt-0 md:ml-0">
                             <div class="px-4 pb-2 pt-4">
                               <button
-                                class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+                                class="w-full px-4 py-2 font-bold text-white bg-primary rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
                                 type="button"
                               >
                                 Search
@@ -149,72 +149,90 @@
     </div>
   </div>
 
-  <section class="bg-white">
-    <div class="max-w-5xl px-6 py-16 mx-auto">
-      <div class="items-center md:flex md:space-x-6">
-        <div class="md:w-1/2">
-          <h3 class="text-3xl font-semibold text-gray-800">
-            Know Your Hazard:<br />
-            Flooding
-          </h3>
-          <p class="max-w-md mt-4 text-gray-600 pb-4">
-            In the event of
-            <b>flooding due to ranfall as heavy as Ondoy,</b> how likely are you
-            to be affected
-          </p>
-          <button
-            class="mx-auto lg:mx-0 hover:underline bg-white text-blue-600 font-bold rounded-full my-6 py-4 px-8 shadow-lg"
-            routerLink="personal"
-          >
-            Find out more
-          </button>
-        </div>
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 sm:px-8 xl:px-40 lg:px-20 sm:py-12 sm:gap-x-8 md:py-16"
+  >
+    <div
+      class="relative z-10 col-start-1 row-start-1 px-4 pt-40 pb-3 from-black sm:bg-none"
+    >
+      <h3
+        class="text-2xl font-semibold text-white sm:text-2xl sm:leading-7 sm:text-black md:text-4xl"
+      >
+        Know Your Hazard:<br />
+        Flooding
+      </h3>
+    </div>
+    <div class="col-start-1 row-start-2 px-4 sm:pb-16">
+      <div class="flex items-center text-lg my-5 sm:mt-2 sm:mb-4">
+        <p class="max-w-md mt-4 pb-4">
+          In the event of
+          <b>flooding due to ranfall as heavy as Ondoy,</b> how likely are you
+          to be affected
+        </p>
+      </div>
+      <button
+        class="mx-auto lg:mx-0 hover:underline bg-white text-blue-600 font-bold rounded-full py-4 px-8 shadow-lg"
+        routerLink="personal"
+      >
+        Find out more
+      </button>
+    </div>
 
-        <div class="mt-8 md:mt-0 md:w-1/2">
-          <div class="flex items-center justify-center">
-            <div class="max-w-md">
-              <img
-                class="object-cover object-center w-full rounded-md shadow"
-                src="assets/icons/flood.png"
-              />
-            </div>
-          </div>
+    <div class="col-start-1 row-start-1 flex sm:col-start-2 sm:row-span-2">
+      <div class="w-full grid gap-2">
+        <div class="relative">
+          <img
+            src="assets/icons/flood.png"
+            alt=""
+            class="absolute inset-0 w-full h-full object-cover bg-gray-100 sm:rounded-lg shadow"
+          />
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <section class="bg-white">
-    <div class="max-w-5xl px-6 py-16 mx-auto">
-      <div class="items-center md:flex md:space-x-6">
-        <div class="md:w-1/2">
-          <div class="flex items-center justify-center">
-            <div class="max-w-md">
-              <img
-                class="object-cover object-center w-full rounded-md shadow"
-                src="assets/icons/storm_surge.png"
-              />
-            </div>
-          </div>
-        </div>
+  <br />
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 sm:px-8 xl:px-40 lg:px-20 sm:py-12 sm:gap-x-8 md:py-16 my-6"
+  >
+    <div
+      class="relative z-10 col-start-1 row-start-2 sm:col-start-2 px-4 xl:px-20 pt-40 pb-3 from-black sm:bg-none"
+    >
+      <h3
+        class="text-2xl font-semibold text-white sm:text-2xl sm:leading-7 sm:text-black md:text-4xl"
+      >
+        Know Your Hazard:<br />
+        Storm Surge
+      </h3>
+    </div>
+    <div class="col-start-1 sm:col-start-2 row-start-3 px-6 xl:px-20 sm:pb-16">
+      <div class="flex items-center text-lg my-5 sm:mt-2 sm:mb-4">
+        <p class="max-w-md mt-4 pb-4">
+          How prone is your neighborhood to <b>storm surges</b> as strong as
+          those caused by the typhoon Yolanda?
+        </p>
+      </div>
 
-        <div class="mt-8 md:mt-0 md:w-1/2">
-          <h3 class="text-3xl font-semibold text-gray-800">
-            Know Your Hazard:<br />Storm Surge
-          </h3>
-          <p class="max-w-md mt-4 text-gray-600 pb-4">
-            How prone is your neighborhood to <b>storm surges</b> as strong as
-            those caused by the typhoon Yolanda?
-          </p>
-          <button
-            class="mx-auto lg:mx-0 hover:underline bg-white text-blue-600 font-bold rounded-full my-6 py-4 px-8 shadow-lg"
-          >
-            Find out more
-          </button>
+      <button
+        class="mx-auto lg:mx-0 hover:underline bg-white text-blue-600 font-bold rounded-full py-4 px-8 shadow-lg"
+        routerLink="personal"
+      >
+        Find out more
+      </button>
+    </div>
+
+    <div class="col-start-1 row-start-2 flex sm:col-start-1 sm:row-span-3">
+      <div class="w-full grid gap-2">
+        <div class="relative">
+          <img
+            src="assets/icons/storm_surge.png"
+            alt=""
+            class="absolute inset-0 w-full h-full object-cover bg-gray-100 sm:rounded-lg shadow"
+          />
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
   <hr class="mb-6 border-t" />
   <section class="bg-white">
@@ -272,7 +290,7 @@
     </g>
   </svg>
 
-  <footer class="bg-gray-300 pt-12 pb-8 px-4">
+  <footer class="bg-sidebar pt-12 pb-8 px-4">
     <div
       class="mx-auto px-4 container overflow-hidden flex flex-col lg:flex-row justify-between"
     >
