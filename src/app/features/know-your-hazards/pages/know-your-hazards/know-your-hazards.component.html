@@ -278,13 +278,15 @@
               class="
                 z-40
                 fixed
+                overflow-y-auto
                 top-0
                 bg-white
                 shadow
-                min-h-screen
+                h-full
                 flex-col
                 justify-between
                 overflow-auto
+                pb-0
                 transition
                 duration-150
                 ease-in-out
@@ -433,7 +435,6 @@
                           </svg>
                         </div>
                       </div>
-
                       <div class="py-2 max-w-xl w-full flex flex-row">
                         <div class="mr-4 md:mt-0 items-center flex">
                           <svg
@@ -615,15 +616,12 @@
           class="bg-black opacity-40 fixed top-0 left-0 right-0 bottom-0"
           (click)="islandSlide = false"
         ></div>
-        <div class="px-5 sm:py-24 flex w-full md:px-0 md:py-0">
+        <div class="px-4 py-24 flex w-full md:px-2 md:py-2">
           <div
             class="
               lg:w-1/4
               md:w-1/4
               sm:w-full
-              min-h-screen
-              sm:rounded
-              lg:rounded-none
               bg-white
               flex flex-col
               md:ml-auto
@@ -649,8 +647,8 @@
                 ease-in-out
               "
             >
-              <div class="px-6 h-full">
-                <div class="flex flex-col justify-between h-full w-full">
+              <div class="px-4 min-h-screen">
+                <div class="flex flex-col justify-between w-full">
                   <div>
                     <div class="mt-6 flex w-full items-center justify-between">
                       <div
@@ -660,227 +658,215 @@
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          class="icon icon-tabler icon-tabler-x"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
+                          class="h-6 w-6"
                           fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          role="button"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
                         >
-                          <path stroke="none" d="M0 0h24v24H0z"></path>
-                          <line x1="18" y1="6" x2="6" y2="18"></line>
-                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                          />
                         </svg>
                       </div>
-                      <div class="h-16 w-full pl-2 flex items-center pb-4 mt-2">
-                        <h4 class="text-xl font-bold leading-tight mt-8 pb-4">
+                      <div class="h-16 w-full pl-2 flex items-center">
+                        <h4 class="text-2xl font-bold leading-tight mt-4 pb-4">
                           Know Your Hazard: Landslides
                         </h4>
                       </div>
                     </div>
-
-                    <ul class="f-m-m">
-                      <li class="text-gray-800 pt-4">
-                        <div class="items-center">
-                          <p class="text-black-700">
-                            A <b>landslide</b> is a movement of earth, rock, or
-                            debris due to gravity. Landslides can be caused by
-                            continous heavy rainfall, strong earthquakes, or
-                            human activities.
+                    <div class="text-gray-800 py-4 mx-8 items-center">
+                      <p class="text-black-700">
+                        A <b>landslide</b> is a movement of earth, rock, or
+                        debris due to gravity. Landslides can be caused by
+                        continous heavy rainfall, strong earthquakes, or human
+                        activities.
+                      </p>
+                    </div>
+                    <div class="items-start mx-8">
+                      <h4 class="text-xl font-bold leading-tight my-2 pt-2">
+                        How To Prepare For Landslides
+                      </h4>
+                      <div class="py-2 max-w-xl w-full flex flex-row">
+                        <div class="flex-1">
+                          <p class="text-black my-2">
+                            Your landslide hazard level is
+                            <span
+                              [ngClass]="
+                                'text-' + (landslideRiskLevel$ | async)
+                              "
+                              >{{ landslideRiskLevel$ | async }}</span
+                            >. Evacuate immediately when there’s an alert for
+                            heavy rainfall or as advised by your local
+                            authorities.
                           </p>
                         </div>
-                      </li>
-
-                      <div class="items-start p-2 pb-2 mt-2">
-                        <h4
-                          class="text-xl font-bold leading-tight mt-2 pb-2 pl-4"
-                        >
-                          How To Prepare For Landslides
-                        </h4>
-
-                        <div class="max-w-xl w-full p-4 flex flex-ro">
-                          <div class="flex-1">
-                            <p class="text-black my-1">
-                              Your landslide hazard level is high. Evacuate
-                              immediately when there’s an alert for heavy
-                              rainfall or as advised by your local authorities.
-                            </p>
-                          </div>
-                          <div class="px-2 mt-3 md:mt-0 items-center flex">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              class="
-                                w-16
-                                h-16
-                                rounded-2xl
-                                p-3
-                                border border-blue-100
-                                text-blue-400
-                                bg-blue-50
-                              "
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              ></path>
-                            </svg>
-                          </div>
-                        </div>
-
-                        <div class="max-w-xl w-full p-4 flex flex-row">
-                          <div class="px-2 mt-3 md:mt-0 items-center flex">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              class="
-                                w-16
-                                h-16
-                                rounded-2xl
-                                p-3
-                                border border-blue-100
-                                text-blue-400
-                                bg-blue-50
-                              "
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              ></path>
-                            </svg>
-                          </div>
-                          <div class="flex-1">
-                            <p class="text-black my-1">
-                              Always have a survival kit ready and accessible.
-                              Ideally this is near your exit doors, ready for
-                              grabbing when in a rush.
-                            </p>
-                          </div>
-                        </div>
-
-                        <div class="max-w-xl w-full p-4 flex flex-row">
-                          <div class="flex-1">
-                            <p class="text-black my-1">
-                              Listen for emergency information and alerts
-                            </p>
-                          </div>
-                          <div class="px-2 mt-3 md:mt-0 items-center flex">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              class="
-                                w-16
-                                h-16
-                                rounded-2xl
-                                p-3
-                                border border-blue-100
-                                text-blue-400
-                                bg-blue-50
-                              "
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              ></path>
-                            </svg>
-                          </div>
+                        <div class="ml-4 md:mt-0 items-center flex">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="
+                              w-16
+                              h-16
+                              rounded-2xl
+                              p-3
+                              border border-blue-100
+                              text-blue-400
+                              bg-blue-50
+                            "
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            ></path>
+                          </svg>
                         </div>
                       </div>
-                      <hr />
-                      <div class="items-start p-2 pb-2 mt-2">
-                        <h4
-                          class="text-xl font-bold leading-tight mt-2 pb-2 pl-4"
-                        >
-                          Surviving A Landslide
-                        </h4>
-                        <div class="max-w-xl w-full p-4 flex flex-row">
-                          <div class="px-2 mt-3 md:mt-0 items-center flex">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              class="
-                                w-16
-                                h-16
-                                rounded-2xl
-                                p-3
-                                border border-blue-100
-                                text-blue-400
-                                bg-blue-50
-                              "
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              ></path>
-                            </svg>
-                          </div>
-                          <div class="flex-1">
-                            <p class="text-black my-1">
-                              If caught in landslide debris, continue to move
-                              and make noise to alert rescuers.
-                            </p>
-                          </div>
-                        </div>
-                        <h4
-                          class="text-xl font-bold leading-tight mt-2 pb-2 pl-4"
-                        >
-                          After A Landslide
-                        </h4>
 
-                        <div class="max-w-xl w-full p-4 flex flex-row">
-                          <div class="px-2 mt-3 md:mt-0 items-center flex">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              class="
-                                w-16
-                                h-16
-                                rounded-2xl
-                                p-3
-                                border border-blue-100
-                                text-blue-400
-                                bg-blue-50
-                              "
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              ></path>
-                            </svg>
-                          </div>
-                          <div class="flex-1">
-                            <p class="text-black my-1">
-                              Listen to authorities to find out if it is safe to
-                              return
-                            </p>
-                          </div>
+                      <div class="py-2 max-w-xl w-full flex flex-row">
+                        <div class="mr-4 md:mt-0 items-center flex">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="
+                              w-16
+                              h-16
+                              rounded-2xl
+                              p-3
+                              border border-blue-100
+                              text-blue-400
+                              bg-blue-50
+                            "
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            ></path>
+                          </svg>
+                        </div>
+                        <div class="flex-1">
+                          <p class="text-black my-2">
+                            Always have a survival kit ready and accessible.
+                            Ideally this is near your exit doors, ready for
+                            grabbing when in a rush.
+                          </p>
                         </div>
                       </div>
-                    </ul>
+
+                      <div class="py-2 max-w-xl w-full flex flex-row">
+                        <div class="flex-1">
+                          <p class="text-black my-2">
+                            Listen for emergency information and alerts
+                          </p>
+                        </div>
+                        <div class="ml-4 md:mt-0 items-center flex">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="
+                              w-16
+                              h-16
+                              rounded-2xl
+                              p-3
+                              border border-blue-100
+                              text-blue-400
+                              bg-blue-50
+                            "
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            ></path>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="items-start mx-8">
+                      <h4 class="text-xl font-bold leading-tight my-2 pt-2">
+                        Surviving A Landslide
+                      </h4>
+                      <div class="py-2 max-w-xl w-full flex flex-row">
+                        <div class="mr-4 md:mt-0 items-center flex">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="
+                              w-16
+                              h-16
+                              rounded-2xl
+                              p-3
+                              border border-blue-100
+                              text-blue-400
+                              bg-blue-50
+                            "
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            ></path>
+                          </svg>
+                        </div>
+                        <div class="flex-1">
+                          <p class="text-black my-2">
+                            If caught in landslide debris, continue to move and
+                            make noise to alert rescuers.
+                          </p>
+                        </div>
+                      </div>
+                      <h4 class="text-xl font-bold leading-tight my-2 pt-2">
+                        After A Landslide
+                      </h4>
+                      <div class="py-2 max-w-xl w-full flex flex-row">
+                        <div class="mr-4 md:mt-0 items-center flex">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="
+                              w-16
+                              h-16
+                              rounded-2xl
+                              p-3
+                              border border-blue-100
+                              text-blue-400
+                              bg-blue-50
+                            "
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            ></path>
+                          </svg>
+                        </div>
+                        <div class="flex-1">
+                          <p class="text-black my-2">
+                            Listen to authorities to find out if it is safe to
+                            return
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -890,7 +876,6 @@
       </div>
 
       <!-- STORMSURGE -->
-
       <div
         *ngIf="isStorm"
         class="w-screen z-40 fixed top-0 bottom-0 right-0"
@@ -900,15 +885,12 @@
           class="bg-black opacity-40 fixed top-0 left-0 right-0 bottom-0"
           (click)="isStorm = false"
         ></div>
-        <div class="px-5 sm:py-24 flex w-full md:px-0 md:py-0">
+        <div class="px-4 py-24 flex w-full md:px-2 md:py-2">
           <div
             class="
               lg:w-1/4
               md:w-1/4
               sm:w-full
-              min-h-screen
-              sm:rounded
-              lg:rounded-none
               bg-white
               flex flex-col
               md:ml-auto
@@ -934,8 +916,8 @@
                 ease-in-out
               "
             >
-              <div class="px-6 h-full">
-                <div class="flex flex-col justify-between h-full w-full">
+              <div class="px-4 min-h-screen">
+                <div class="flex flex-col justify-between w-full">
                   <div>
                     <div class="mt-6 flex w-full items-center justify-between">
                       <div
@@ -945,186 +927,178 @@
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          class="icon icon-tabler icon-tabler-x"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
+                          class="h-6 w-6"
                           fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          role="button"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
                         >
-                          <path stroke="none" d="M0 0h24v24H0z"></path>
-                          <line x1="18" y1="6" x2="6" y2="18"></line>
-                          <line x1="6" y1="6" x2="18" y2="18"></line>
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                          />
                         </svg>
                       </div>
-                      <div class="h-16 w-full pl-2 flex items-center pb-4 mt-2">
-                        <h4 class="text-xl font-bold leading-tight mt-8 pb-4">
+                      <div class="h-16 w-full pl-2 flex items-center">
+                        <h4 class="text-2xl font-bold leading-tight mt-4 pb-4">
                           Know Your Hazard: Storm Surge
                         </h4>
                       </div>
                     </div>
+                    <div class="text-gray-800 py-4 mx-8 items-center">
+                      <p class="text-black-700">
+                        A <b>storm surge</b> is a <b>tsunami-like</b> phenomenon
+                        of rising water resulting from <b>typhoons (storms)</b>.
+                      </p>
+                    </div>
 
-                    <ul class="f-m-m">
-                      <li class="text-gray-800 pt-4">
-                        <div class="items-center">
-                          <p class="text-black-700">
-                            A <b>storm surge</b> is a
-                            <b>tsunami-like</b> phenomenon of rising water
-                            resulting from <b>typhoons (storms)</b>.
+                    <div class="items-start mx-8">
+                      <h4 class="text-xl font-bold leading-tight my-2 pt-2">
+                        How To Prepare For Storm Surges
+                      </h4>
+
+                      <div class="py-2 max-w-xl w-full flex flex-row">
+                        <div class="flex-1">
+                          <p class="text-black my-2">
+                            Your storm surge hazard level is
+                            <span
+                              [ngClass]="
+                                'text-' + (stormsurgeRiskLevel$ | async)
+                              "
+                              >{{ stormsurgeRiskLevel$ | async }}</span
+                            >. Evacuate immediately and move to a more elevated
+                            area when there’s an alert for strong typhoons.
                           </p>
                         </div>
-                      </li>
-
-                      <div class="items-start p-2 pb-2 mt-2">
-                        <h4
-                          class="text-xl font-bold leading-tight mt-2 pb-2 pl-4"
-                        >
-                          How To Prepare For Storm Surges
-                        </h4>
-
-                        <div class="max-w-xl w-full p-4 flex flex-row">
-                          <div class="flex-1">
-                            <p class="text-black my-1">
-                              Your storm surge hazard level is high. Evacuate
-                              immediately and move to a more elevated area when
-                              there’s an alert for strong typhoons.
-                            </p>
-                          </div>
-                          <div class="px-2 mt-3 md:mt-0 items-center flex">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              class="
-                                w-16
-                                h-16
-                                rounded-2xl
-                                p-3
-                                border border-blue-100
-                                text-blue-400
-                                bg-blue-50
-                              "
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              ></path>
-                            </svg>
-                          </div>
-                        </div>
-
-                        <div class="max-w-xl w-full p-4 flex flex-row">
-                          <div class="px-2 mt-3 md:mt-0 items-center flex">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              class="
-                                w-16
-                                h-16
-                                rounded-2xl
-                                p-3
-                                border border-blue-100
-                                text-blue-400
-                                bg-blue-50
-                              "
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              ></path>
-                            </svg>
-                          </div>
-                          <div class="flex-1">
-                            <p class="text-black my-1">
-                              Listen for emergency information and alerts.
-                            </p>
-                          </div>
-                        </div>
-
-                        <div class="max-w-xl w-full p-4 flex flex-row">
-                          <div class="flex-1">
-                            <p class="text-black my-1">
-                              Listen for emergency information and alerts
-                            </p>
-                          </div>
-                          <div class="px-2 mt-3 md:mt-0 items-center flex">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              class="
-                                w-16
-                                h-16
-                                rounded-2xl
-                                p-3
-                                border border-blue-100
-                                text-blue-400
-                                bg-blue-50
-                              "
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              ></path>
-                            </svg>
-                          </div>
+                        <div class="ml-4 md:mt-0 items-center flex">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="
+                              w-16
+                              h-16
+                              rounded-2xl
+                              p-3
+                              border border-blue-100
+                              text-blue-400
+                              bg-blue-50
+                            "
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            ></path>
+                          </svg>
                         </div>
                       </div>
-                      <hr />
-                      <div class="items-start p-2 pb-2 mt-2">
-                        <h4
-                          class="text-xl font-bold leading-tight mt-2 pb-2 pl-4"
-                        >
-                          Surviving A Storm Suges
-                        </h4>
-                        <div class="max-w-xl w-full p-4 flex flex-row">
-                          <div class="px-2 mt-3 md:mt-0 items-center flex">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              class="
-                                w-16
-                                h-16
-                                rounded-2xl
-                                p-3
-                                border border-blue-100
-                                text-blue-400
-                                bg-blue-50
-                              "
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              ></path>
-                            </svg>
-                          </div>
-                          <div class="flex-1">
-                            <p class="text-black my-1">
-                              If caught in Storm Surge debris, continue to move
-                              and make noise to alert rescuers.
-                            </p>
-                          </div>
+
+                      <div class="py-2 max-w-xl w-full flex flex-row">
+                        <div class="mr-4 md:mt-0 items-center flex">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="
+                              w-16
+                              h-16
+                              rounded-2xl
+                              p-3
+                              border border-blue-100
+                              text-blue-400
+                              bg-blue-50
+                            "
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            ></path>
+                          </svg>
+                        </div>
+                        <div class="flex-1">
+                          <p class="text-black my-2">
+                            Listen for emergency information and alerts.
+                          </p>
                         </div>
                       </div>
-                    </ul>
+
+                      <div class="py-2 max-w-xl w-full flex flex-row">
+                        <div class="flex-1">
+                          <p class="text-black my-2">
+                            Listen for emergency information and alerts
+                          </p>
+                        </div>
+                        <div class="ml-4 md:mt-0 items-center flex">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="
+                              w-16
+                              h-16
+                              rounded-2xl
+                              p-3
+                              border border-blue-100
+                              text-blue-400
+                              bg-blue-50
+                            "
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            ></path>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="items-start mx-8">
+                      <h4 class="text-xl font-bold leading-tight my-2 pt-2">
+                        Surviving A Storm Suges
+                      </h4>
+                      <div class="py-2 max-w-xl w-full flex flex-row">
+                        <div class="mr-4 md:mt-0 items-center flex">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="
+                              w-16
+                              h-16
+                              rounded-2xl
+                              p-3
+                              border border-blue-100
+                              text-blue-400
+                              bg-blue-50
+                            "
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            ></path>
+                          </svg>
+                        </div>
+                        <div class="flex-1">
+                          <p class="text-black my-2">
+                            If caught in Storm Surge debris, continue to move
+                            and make noise to alert rescuers.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1132,7 +1106,6 @@
           </div>
         </div>
       </div>
-      <router-outlet></router-outlet>
     </div>
   </div>
 </div>
