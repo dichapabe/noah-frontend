@@ -17,9 +17,9 @@ type KYHState = {
   center: { lng: number; lat: number };
   currentCoords: { lng: number; lat: number };
   currentPage: KYHPage;
-  floodriskLevel: RiskLevel;
-  stormsurgeriskLevel: RiskLevel;
-  landslideriskLevel: RiskLevel;
+  floodRiskLevel: RiskLevel;
+  stormsurgeRiskLevel: RiskLevel;
+  landslideRiskLevel: RiskLevel;
   currentLocation: string;
 };
 
@@ -29,9 +29,9 @@ const createInitialValue = (): KYHState => {
     center: PH_DEFAULT_CENTER,
     currentCoords: PH_DEFAULT_CENTER,
     currentPage: 'know-your-hazards',
-    floodriskLevel: 'unavailable',
-    stormsurgeriskLevel: 'unavailable',
-    landslideriskLevel: 'unavailable',
+    floodRiskLevel: 'unavailable',
+    stormsurgeRiskLevel: 'unavailable',
+    landslideRiskLevel: 'unavailable',
     currentLocation: '------',
   };
 };
