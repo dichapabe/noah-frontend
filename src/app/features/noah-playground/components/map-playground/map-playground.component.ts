@@ -21,7 +21,9 @@ import {
   LEYTE_PROVINCE_UNSTABLE_SLOPES,
   LEYTE_PROVINCE_DEBRIS_FLOW,
 } from '@shared/mocks/landslide';
-import { PlaygroundService } from '@features/playground/services/playground.service';
+// import { PlaygroundService } from '@features/playground/services/playground.service';
+import { NoahPlaygroundService } from '@features/noah-playground/services/noah-playground.service';
+
 import {
   FloodReturnPeriod,
   StormSurgeAdvisory,
@@ -46,7 +48,7 @@ export class MapPlaygroundComponent implements OnInit {
 
   constructor(
     private mapService: MapService,
-    private playgroundService: PlaygroundService
+    private playgroundService: NoahPlaygroundService
   ) {}
 
   ngOnInit(): void {
