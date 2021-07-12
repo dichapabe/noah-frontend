@@ -108,10 +108,6 @@ export class KyhService {
     this.assessRisk();
   }
 
-  // isHazardPage(currentPage: KYHPage): boolean {
-  //   return this.hazardTypes.includes(currentPage);
-  // }
-
   isHazardLayer(currentHazard: HazardType): boolean {
     return this.hazardTypes.includes(currentHazard);
   }
@@ -155,21 +151,5 @@ export class KyhService {
       default:
         return '';
     }
-  }
-  get hazardLayer$(): Observable<string> {
-    return this.currentHazard$.pipe(
-      map((currentHazard: HazardType) => {
-        switch (currentHazard) {
-          case 'flood':
-            return 'jadurani.3tg2ae87';
-          case 'landslide':
-            return 'jadurani.boxlw5qe';
-          case 'storm-surge':
-            return 'jadurani.cmmzrdab';
-          default:
-            return '';
-        }
-      })
-    );
   }
 }

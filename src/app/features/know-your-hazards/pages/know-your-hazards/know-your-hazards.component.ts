@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { KyhService } from '@features/know-your-hazards/services/kyh.service';
 import {
   HazardType,
+  KYHPage,
   RiskLevel,
 } from '@features/know-your-hazards/store/kyh.store';
 import { Observable } from 'rxjs';
@@ -37,6 +38,11 @@ export class KnowYourHazardsComponent implements OnInit {
   viewHazardLayer(currentHazard: HazardType) {
     this.kyhService.setCurrentHazard(currentHazard);
   }
+  // viewAllLayer(currentPage: KYHPage) {
+  //   console.log(currentPage);
+  //   this.kyhService.init();
+  //   this.kyhService.setCurrentPage(currentPage);
+  // }
   selectPlace(selectedPlace) {
     this.kyhService.setCurrentLocation(selectedPlace.text);
     const [lng, lat] = selectedPlace.center;
