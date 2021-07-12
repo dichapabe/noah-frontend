@@ -8,6 +8,7 @@
   </a>
 </div>
 <div class="relative w-full flex flex-wrap min-h-screen">
+  <!-- Small screen search -->
   <div class="fixed inset-0 w-full md:w-9/12 flex justify-center items-center">
     <noah-search
       [searchTerm]="searchTerm"
@@ -25,6 +26,7 @@
     ></noah-search>
     <noah-map-kyh></noah-map-kyh>
   </div>
+  <!-- end -->
 
   <div class="pt-96 flex w-full md:px-0 md:py-0 static">
     <div
@@ -64,7 +66,7 @@
               rounded-2xl
               hover:bg-blue-300
             "
-            (click)="isFlood = true"
+            (click)="isFlood = true; viewHazardLayer('flood')"
             id="menu"
             role="button"
           >
@@ -127,7 +129,7 @@
               rounded-2xl
               hover:bg-blue-300
             "
-            (click)="islandSlide = true"
+            (click)="islandSlide = true; viewHazardLayer('landslide')"
             id="menu"
             role="button"
           >
@@ -190,7 +192,7 @@
               rounded-2xl
               hover:bg-blue-300
             "
-            (click)="isStorm = true"
+            (click)="isStorm = true; viewHazardLayer('storm-surge')"
             id="menu"
             role="button"
           >
