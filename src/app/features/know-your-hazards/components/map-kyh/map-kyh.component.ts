@@ -17,7 +17,10 @@ import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { fromEvent, Subject } from 'rxjs';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
-import { KYHPage } from '@features/know-your-hazards/store/kyh.store';
+import {
+  KYHPage,
+  HazardType,
+} from '@features/know-your-hazards/store/kyh.store';
 
 type MapStyle = 'terrain' | 'satellite';
 
@@ -45,9 +48,10 @@ export class MapKyhComponent implements OnInit {
         this.initGeocoder();
         this.initGeolocation();
 
-        this.initPageListener();
+        // this.initPageListener();
         this.initCenterListener();
         this.initGeolocationListener();
+        this.initHazardLayerListener();
       });
 
     fromEvent(this.map, 'style.load')
@@ -70,6 +74,12 @@ export class MapKyhComponent implements OnInit {
   hideAllLayers() {
     this.kyhService.hazardTypes.forEach((hazard) => {
       this.map.setLayoutProperty(hazard, 'visibility', 'none');
+    });
+  }
+
+  hideHazardLayers() {
+    this.kyhService.hazardTypes.forEach((currentHazard: HazardType) => {
+      this.map.setLayoutProperty(currentHazard, 'visibility', 'none');
     });
   }
 
@@ -141,13 +151,22 @@ export class MapKyhComponent implements OnInit {
     this.map.addLayer(LEYTE_FLOOD);
     this.map.addLayer(LEYTE_LANDSLIDE);
     this.map.addLayer(LEYTE_STORM_SURGE);
+    this.hideHazardLayers();
   }
 
-  initPageListener() {
-    this.kyhService.currentPage$
+  // initPageListener() {
+  //   this.kyhService.currentPage$
+  //     .pipe(takeUntil(this._unsub))
+  //     .subscribe((page) => {
+  //       this.showLayers(page);
+  //     });
+  // }
+
+  initHazardLayerListener() {
+    this.kyhService.currentHazard$
       .pipe(takeUntil(this._unsub))
-      .subscribe((page) => {
-        this.showLayers(page);
+      .subscribe((currentHazard) => {
+        this.showCurrentHazardLayer(currentHazard);
       });
   }
 
@@ -213,10 +232,16 @@ export class MapKyhComponent implements OnInit {
     });
   }
 
-  showCurrentHazardLayer(page: KYHPage) {
-    if (!this.kyhService.isHazardPage(page)) return;
+  // showCurrentHazardLayer(page: KYHPage) {
+  //   if (!this.kyhService.isHazardLayer(page)) return;
 
-    this.map.setLayoutProperty(page, 'visibility', 'visible');
+  //   this.map.setLayoutProperty(page, 'visibility', 'visible');
+  // }
+
+  showCurrentHazardLayer(currentHazard: HazardType) {
+    if (!this.kyhService.isHazardLayer(currentHazard)) return;
+
+    this.map.setLayoutProperty(currentHazard, 'visibility', 'visible');
   }
 
   showLayers(page: KYHPage) {
@@ -226,7 +251,7 @@ export class MapKyhComponent implements OnInit {
     }
 
     this.hideAllLayers();
-    this.showCurrentHazardLayer(page);
+    // this.showCurrentHazardLayer(page);
   }
 
   switchMapStyle(style: MapStyle) {

@@ -44,6 +44,14 @@ export class KyhService {
     return this.kyhStore.state$.pipe(map((state) => state.currentPage));
   }
 
+  get currentHazard(): HazardType {
+    return this.kyhStore.state.currentHazard;
+  }
+
+  get currentHazard$(): Observable<HazardType> {
+    return this.kyhStore.state$.pipe(map((state) => state.currentHazard));
+  }
+
   get floodRiskLevel$(): Observable<RiskLevel> {
     return this.kyhStore.state$.pipe(map((state) => state.floodRiskLevel));
   }
@@ -56,7 +64,7 @@ export class KyhService {
     return this.kyhStore.state$.pipe(map((state) => state.landslideRiskLevel));
   }
 
-  get hazardTypes(): string[] {
+  get hazardTypes(): HazardType[] {
     return ['flood', 'landslide', 'storm-surge'];
   }
 
@@ -98,20 +106,14 @@ export class KyhService {
 
   init() {
     this.assessRisk();
-    this.currentPage$
-      .pipe(
-        distinctUntilChanged(),
-        tap((page) => {
-          if (this.isHazardPage(page)) {
-            this.setMapCenter(PH_DEFAULT_CENTER);
-          }
-        })
-      )
-      .subscribe();
   }
 
-  isHazardPage(currentPage: KYHPage): boolean {
-    return this.hazardTypes.includes(currentPage);
+  // isHazardPage(currentPage: KYHPage): boolean {
+  //   return this.hazardTypes.includes(currentPage);
+  // }
+
+  isHazardLayer(currentHazard: HazardType): boolean {
+    return this.hazardTypes.includes(currentHazard);
   }
 
   setCenter(center: { lat: number; lng: number }) {
@@ -124,6 +126,10 @@ export class KyhService {
 
   setCurrentLocation(currentLocation: string): void {
     this.kyhStore.patch({ currentLocation }, 'update current location');
+  }
+
+  setCurrentHazard(currentHazard: HazardType) {
+    this.kyhStore.patch({ currentHazard }, 'update current hazard');
   }
 
   setCurrentPage(currentPage: KYHPage): void {
@@ -149,5 +155,21 @@ export class KyhService {
       default:
         return '';
     }
+  }
+  get hazardLayer$(): Observable<string> {
+    return this.currentHazard$.pipe(
+      map((currentHazard: HazardType) => {
+        switch (currentHazard) {
+          case 'flood':
+            return 'jadurani.3tg2ae87';
+          case 'landslide':
+            return 'jadurani.boxlw5qe';
+          case 'storm-surge':
+            return 'jadurani.cmmzrdab';
+          default:
+            return '';
+        }
+      })
+    );
   }
 }

@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { KyhService } from '@features/know-your-hazards/services/kyh.service';
-import { RiskLevel } from '@features/know-your-hazards/store/kyh.store';
+import {
+  HazardType,
+  RiskLevel,
+} from '@features/know-your-hazards/store/kyh.store';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -14,6 +17,7 @@ export class KnowYourHazardsComponent implements OnInit {
   floodRiskLevel$: Observable<RiskLevel>;
   stormsurgeRiskLevel$: Observable<RiskLevel>;
   landslideRiskLevel$: Observable<RiskLevel>;
+  currentHazard$: Observable<HazardType>;
   isFlood: boolean = false;
   islandSlide: boolean = false;
   isStorm: boolean = false;
@@ -22,12 +26,16 @@ export class KnowYourHazardsComponent implements OnInit {
     this.floodRiskLevel$ = this.kyhService.floodRiskLevel$;
     this.stormsurgeRiskLevel$ = this.kyhService.stormsurgeRiskLevel$;
     this.landslideRiskLevel$ = this.kyhService.landslideRiskLevel$;
+    this.currentHazard$ = this.kyhService.currentHazard$;
   }
 
   ngOnInit(): void {
     this.kyhService.init();
     this.kyhService.setCurrentPage('know-your-hazards');
     this.currentLocation$ = this.kyhService.currentLocation$;
+  }
+  viewHazardLayer(currentHazard: HazardType) {
+    this.kyhService.setCurrentHazard(currentHazard);
   }
   selectPlace(selectedPlace) {
     this.kyhService.setCurrentLocation(selectedPlace.text);
