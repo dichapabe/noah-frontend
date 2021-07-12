@@ -35,7 +35,6 @@ export class KnowYourHazardsComponent implements OnInit {
     this.currentLocation$ = this.kyhService.currentLocation$;
   }
   viewHazardLayer(currentHazard: HazardType) {
-    console.log(currentHazard);
     this.kyhService.setCurrentHazard(currentHazard);
   }
   selectPlace(selectedPlace) {
