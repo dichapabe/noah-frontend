@@ -214,7 +214,7 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
       container: 'map',
       style: environment.mapbox.styles.terrain,
       // zoom: 5,
-      zoom: 10,
+      zoom: 13,
       touchZoomRotate: true,
       center: {
         lat: 10.872407621178079,
