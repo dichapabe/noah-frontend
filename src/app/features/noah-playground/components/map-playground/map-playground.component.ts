@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MapService } from '@core/services/map.service';
-import mapboxgl, { Map, Marker } from 'mapbox-gl';
+import mapboxgl, { GeolocateControl, Map, Marker } from 'mapbox-gl';
 import { environment } from '@env/environment';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { combineLatest, fromEvent, Subject } from 'rxjs';
@@ -13,6 +13,8 @@ import {
   CRITICAL_FACILITIES_ARR,
   getSymbolLayer,
 } from '@shared/mocks/critical-facilities';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
 type MapStyle = 'terrain' | 'satellite';
 
@@ -23,6 +25,7 @@ type MapStyle = 'terrain' | 'satellite';
 })
 export class MapPlaygroundComponent implements OnInit, OnDestroy {
   map!: Map;
+  geolocateControl!: GeolocateControl;
   pgLocation: string = '';
   mapStyle: MapStyle = 'terrain';
 
@@ -36,6 +39,16 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initMap();
+
+    fromEvent(this.map, 'load')
+      .pipe(takeUntil(this._unsub))
+      .subscribe(() => {
+        this.initGeocoder();
+        this.initGeolocation();
+        // this.initCenterListener();
+        this.initGeolocationListener();
+      });
+
     fromEvent(this.map, 'style.load')
       .pipe(takeUntil(this._unsub))
       .subscribe(() => {
@@ -51,6 +64,31 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
     this._changeStyle.next();
     this._changeStyle.complete();
   }
+
+  initGeocoder() {
+    const geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken,
+      mapboxgl: mapboxgl,
+      marker: {
+        color: 'orange',
+      },
+      flyTo: {
+        padding: 15,
+        easing: function (t) {
+          return t;
+        },
+        maxZoom: 13,
+      },
+    });
+    this.map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+  }
+
+  initGeolocation() {
+    this.geolocateControl = this.mapService.getNewGeolocateControl();
+    this.map.addControl(this.geolocateControl, 'top-right');
+  }
+
+  initGeolocationListener() {}
 
   initCriticalFacilityLayers() {
     CRITICAL_FACILITIES_ARR.forEach((cf) => this._loadCriticalFacilityIcon(cf));
