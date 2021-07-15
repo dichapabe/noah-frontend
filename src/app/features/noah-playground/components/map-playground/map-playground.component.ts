@@ -107,7 +107,7 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
       .subscribe((center) => {
         this.map.flyTo({
           center,
-          zoom: 15,
+          zoom: 13,
           essential: true,
         });
       });
@@ -261,7 +261,7 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
       container: 'map',
       style: environment.mapbox.styles.terrain,
       // zoom: 5,
-      zoom: 13,
+      zoom: 10,
       touchZoomRotate: true,
       center: this.pgService.currentCoords,
     });

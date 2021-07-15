@@ -223,4 +223,8 @@ export class NoahPlaygroundService {
   setCurrentLocation(currentLocation: string): void {
     this.store.patch({ currentLocation }, 'update current location');
   }
+
+  setMapCenter(coords: { lat: number; lng: number }) {
+    this.store.patch({ center: coords }, 'update map center');
+  }
 }
