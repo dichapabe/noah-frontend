@@ -5,6 +5,7 @@ import { KyhService } from '@features/know-your-hazards/services/kyh.service';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, filter, switchMap, tap } from 'rxjs/operators';
 
+// temporary code for leyte
 type FixedLeyte = {
   center: [number, number];
   text: string;
@@ -48,6 +49,7 @@ export class SearchComponent implements OnInit {
       });
   }
 
+  // temporary code for leyte
   get fixedForLeyte(): FixedLeyte {
     return {
       center: [124.98707397619495, 10.777080241395213],
