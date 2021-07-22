@@ -5,79 +5,35 @@
     <noah-navigation></noah-navigation>
   </div>
 
-  <div class="pt-24">
-    <div class="items-center">
-      <section class="items-center justify-cente w-full h-screen">
+  <div class="top-0">
+    <div class="pt-24 items-center">
+      <section class="items-center justify-center w-full h-screen">
         <div class="absolute top-0 w-full h-screen">
           <img
             src="assets/icons/landing-bg.png"
             class="h-screen w-full object-cover"
           />
         </div>
-        <section class="flex items-center justify-center h-screen">
-          <div class="container mx-auto py-72 px-4 h-full">
-            <div class="flex content-center items-center justify-center h-full">
-              <div
-                class="
-                  relative
-                  flex flex-col
-                  min-w-0
-                  break-words
-                  mb-6
-                  rounded-lg
-                  border-0
-                "
-              >
-                <div class="flex-auto">
-                  <div
-                    class="
-                      w-9/12
-                      m-auto
-                      py-16
-                      min-h-screen
-                      flex
-                      items-center
-                      justify-center
-                      z-50
-                    "
-                  >
-                    <div
-                      class="bg-white shadow overflow-hidden sm:rounded-lg pb-8"
-                    >
-                      <div
-                        class="
-                          border-t border-gray-200
-                          text-center
-                          pt-7
-                          sm:pt-14
-                        "
-                      >
-                        <h1 class="text-2xl sm:text-4xl font-bold p-2 pb-8">
-                          Know Your Hazards
-                        </h1>
-                        <p class="text-sm sm:text-2sm pb-10 px-12">
-                          Assess how likely are you to be affected by
-                          <b>floods</b>, <b>landslides</b>, and
-                          <b>storm surges</b> and what you can do about it.
-                        </p>
-                      </div>
-                      <!-- search -->
-                      <div>
-                        <noah-search
-                          [searchTerm]="searchTerm"
-                          (selectPlace)="selectPlace($event)"
-                          class="w-full mt-4"
-                        >
-                        </noah-search>
-                      </div>
-                      <!-- end search -->
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div
+          class="
+            container
+            mx-auto
+            flex
+            content-center
+            items-center
+            justify-center
+            h-full
+          "
+        >
+          <div class="w-full flex-auto min-h-screen">
+            <noah-search
+              [searchTerm]="searchTerm"
+              (selectPlace)="selectPlace($event)"
+              class="px-4"
+            >
+            </noah-search>
           </div>
-        </section>
+        </div>
       </section>
     </div>
   </div>
