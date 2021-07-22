@@ -1,72 +1,24 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MapService } from '@core/services/map.service';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime, filter, switchMap, tap } from 'rxjs/operators';
 import { KyhService } from '@features/know-your-hazards/services/kyh.service';
-
-type FixedLeyte = {
-  center: [number, number];
-  text: string;
-  place_name: string;
-};
 @Component({
   selector: 'noah-landing-page',
   templateUrl: './landing-page.component.html',
 })
 export class LandingPageComponent implements OnInit {
-  @Input() searchTerm: string;
-  @Output() selectPlace: EventEmitter<any> = new EventEmitter();
-
-  searchTermCtrl: FormControl;
-  places$: BehaviorSubject<any[]>;
-
+  searchTerm: string;
   isDropdownOpen = false;
 
-  constructor(private mapService: MapService, private kyhService: KyhService) {}
+  constructor(private kyhService: KyhService) {}
 
-  ngOnInit(): void {
-    this.kyhService.init();
-    this.searchTermCtrl = new FormControl();
-    this.places$ = new BehaviorSubject([]);
+  ngOnInit(): void {}
 
-    this.searchTermCtrl.valueChanges
-      .pipe(
-        tap((searchText) => {
-          if (!searchText?.length) {
-            this.isDropdownOpen = false;
-            this.places$.next([]);
-          }
-        }),
-        debounceTime(300),
-        filter((searchText) => searchText && this.isDropdownOpen),
-        switchMap((searchText) => this.mapService.forwardGeocode(searchText))
-      )
-      .subscribe((value: any) => {
-        this.places$.next(value.features);
-      });
-  }
-
-  get fixedForLeyte(): FixedLeyte {
-    return {
-      center: [124.881119, 10.862454],
-      text: 'Leyte',
-      place_name: 'Leyte',
-    };
-  }
-
-  pickPlace(place) {
-    this.searchTermCtrl.setValue(place.text);
-    this.isDropdownOpen = false;
-    this.selectPlace.emit(place);
-    console.log(place);
-
-    //fly to
-    this.kyhService.setCurrentLocation(place.text);
-    const [lng, lat] = place.center;
+  selectPlace(selectedPlace) {
+    this.kyhService.setCurrentLocation(selectedPlace.text);
+    const [lng, lat] = selectedPlace.center;
     this.kyhService.setCenter({ lat, lng });
     this.kyhService.setCurrentCoords({ lat, lng });
   }
+
   gotoTop() {
     window.scroll({
       top: 0,

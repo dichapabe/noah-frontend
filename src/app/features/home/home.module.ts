@@ -9,9 +9,15 @@ import { PersonalizedRiskAssessmentModule } from '@features/personalized-risk-as
 import { PlaygroundModule } from '@features/playground/playground.module';
 import { KnowYourHazardsModule } from '@features/know-your-hazards/know-your-hazards.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
-  declarations: [LandingPageComponent, NavigationComponent, FooterComponent],
+  declarations: [
+    LandingPageComponent,
+    NavigationComponent,
+    FooterComponent,
+    SearchComponent,
+  ],
   imports: [
     CommonModule,
     HomeRoutingModule,
