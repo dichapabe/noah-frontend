@@ -5,11 +5,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, filter, switchMap, tap } from 'rxjs/operators';
 import { KyhService } from '@features/know-your-hazards/services/kyh.service';
 
-type FixedLeyte = {
-  center: [number, number];
-  text: string;
-  place_name: string;
-};
 @Component({
   selector: 'noah-landing-page',
   templateUrl: './landing-page.component.html',
@@ -45,14 +40,6 @@ export class LandingPageComponent implements OnInit {
       .subscribe((value: any) => {
         this.places$.next(value.features);
       });
-  }
-
-  get fixedForLeyte(): FixedLeyte {
-    return {
-      center: [124.881119, 10.862454],
-      text: 'Leyte',
-      place_name: 'Leyte',
-    };
   }
 
   pickPlace(place) {
