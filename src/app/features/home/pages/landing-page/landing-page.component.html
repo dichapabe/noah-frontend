@@ -26,13 +26,23 @@
             h-full
           "
         >
-          <div class="px-60 w-full flex-auto h-full">
+          <!-- <div class="px-60 w-full flex-auto h-full">
             <noah-search
               [searchTerm]="searchTerm"
               (selectPlace)="selectPlace($event)"
               class="px-4"
             >
             </noah-search>
+          </div> -->
+          <div class="content">
+            <div class="search-bar">
+              <noah-search
+                [searchTerm]="searchTerm"
+                (selectPlace)="selectPlace($event)"
+                class="px-4"
+              >
+              </noah-search>
+            </div>
           </div>
         </div>
       </section>
