@@ -64,9 +64,9 @@ export class SearchComponent implements OnInit {
     console.log(place);
 
     //fly to
-    this.kyhService.setCurrentLocation(place.text);
-    const [lng, lat] = place.center;
-    this.kyhService.setCenter({ lat, lng });
-    this.kyhService.setCurrentCoords({ lat, lng });
+    // this.kyhService.setCurrentLocation(place.text);
+    // const [lng, lat] = place.center;
+    // this.kyhService.setCenter({ lat, lng });
+    // this.kyhService.setCurrentCoords({ lat, lng });
   }
 }

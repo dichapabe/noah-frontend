@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { KyhService } from '@features/know-your-hazards/services/kyh.service';
 @Component({
   selector: 'noah-landing-page',
@@ -8,7 +9,7 @@ export class LandingPageComponent implements OnInit {
   searchTerm: string;
   isDropdownOpen = false;
 
-  constructor(private kyhService: KyhService) {}
+  constructor(private kyhService: KyhService, private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -17,6 +18,7 @@ export class LandingPageComponent implements OnInit {
     const [lng, lat] = selectedPlace.center;
     this.kyhService.setCenter({ lat, lng });
     this.kyhService.setCurrentCoords({ lat, lng });
+    this.router.navigate(['/know-your-hazards']);
   }
 
   gotoTop() {
