@@ -80,39 +80,56 @@
 
   <!-- DROPDOWN -->
   <div
-    class="z-40 absolute mt-2 py-2 w-full bg-white shadow-xl rounded-md"
+    class="
+      z-40
+      absolute
+      mt-2
+      py-2
+      w-full
+      bg-white
+      shadow-xl
+      rounded-md
+      transition
+      duration-300
+      ease-in-out
+    "
     *ngIf="isDropdownOpen && (places$ | async)?.length"
   >
-    <button
-      (click)="pickPlace(place)"
-      *ngFor="let place of places$ | async"
-      class="
-        block
-        w-full
-        px-4
-        py-2
-        text-left text-gray-800
-        hover:bg-primary hover:text-white
-        transition
-        duration-150
-        ease-in-out
-        focus:outline-none
-        group
-      "
-    >
-      {{ place.text }}
-      <div
+    <ul class="list-none">
+      <li
+        (click)="pickPlace(place)"
+        *ngFor="let place of places$ | async"
         class="
-          text-xs text-gray-400
-          group-hover:text-gray-100
-          overflow-ellipsis
-          whitespace-nowrap
-          overflow-hidden
+          block
+          w-full
+          px-4
+          py-2
+          font-bold
+          text-sm
+          cursor-pointer
+          text-left text-gray-700
+          hover:bg-gray-100 hover:text-gray-900
+          transition
+          duration-300
+          ease-in-out
+          focus:outline-none
+          group
         "
       >
-        {{ place.place_name }}
-      </div>
-    </button>
+        {{ place.text }}
+        <div
+          class="
+            text-xs text-gray-300
+            group-hover:text-gray-400
+            overflow-ellipsis
+            whitespace-nowrap
+            overflow-hidden
+          "
+        >
+          {{ place.place_name }}
+        </div>
+      </li>
+    </ul>
   </div>
 
   <!-- BACKDROP -->
