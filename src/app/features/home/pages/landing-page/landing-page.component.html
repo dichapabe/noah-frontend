@@ -14,46 +14,75 @@
             class="h-screen w-full object-cover"
           />
         </div>
-        <div
-          class="
-            container
-            mx-auto
-            flex
-            content-center
-            items-center
-            justify-center
-          "
-        >
-          <div class="relative w-full flex flex-wrap min-h-screen"></div>
-          <div
-            class="
-              fixed
-              inset-0
-              w-full
-              md:w-9/12
-              flex
-              justify-center
-              items-center
-            "
-          >
-            <noah-search
-              [searchTerm]="searchTerm"
-              (selectPlace)="selectPlace($event)"
-              class="px-4"
-            >
-            </noah-search>
-          </div>
-          <!-- <div class="content p-4 bg-white m-auto">
-              <div class="search-bar">
-                <noah-search
-                  [searchTerm]="searchTerm"
-                  (selectPlace)="selectPlace($event)"
-                  class="px-4"
-                >
-                </noah-search>
+        <!-- Search -->
+        <section class="flex items-center justify-center h-screen">
+          <div class="container mx-auto py-72 px-4 h-full">
+            <div class="flex content-center items-center justify-center h-full">
+              <div
+                class="
+                  relative
+                  flex flex-col
+                  min-w-0
+                  break-words
+                  mb-6
+                  rounded-lg
+                  border-0
+                "
+              >
+                <div class="flex-auto">
+                  <div
+                    class="
+                      w-9/12
+                      m-auto
+                      py-16
+                      min-h-screen
+                      flex
+                      items-center
+                      justify-center
+                      z-50
+                    "
+                  >
+                    <div
+                      class="bg-white shadow overflow-hidden sm:rounded-lg pb-8"
+                    >
+                      <div
+                        class="
+                          border-t border-gray-200
+                          text-center
+                          pt-7
+                          sm:pt-14
+                        "
+                      >
+                        <h1 class="text-2xl sm:text-4xl font-bold p-2 pb-8">
+                          Know Your Hazards
+                        </h1>
+                        <p class="text-sm sm:text-2sm pb-10 px-12">
+                          Assess how likely are you to be affected by
+                          <b>floods</b>, <b>landslides</b>, and
+                          <b>storm surges</b> and what you can do about it.
+                        </p>
+                        <div class="md:flex items-center justify-center">
+                          <div class="md:flex-shrink-1 w-full">
+                            <div class="p-1 px-4 sm:px-20 pb-2 pt-4">
+                              <noah-search
+                                [searchTerm]="searchTerm"
+                                (selectPlace)="selectPlace($event)"
+                                class="invisible md:visible"
+                              >
+                              </noah-search>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div> -->
-        </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- End Search -->
       </section>
     </div>
   </div>
