@@ -43,7 +43,13 @@
                     "
                   >
                     <div
-                      class="bg-white shadow overflow-hidden sm:rounded-lg pb-8"
+                      class="
+                        bg-white
+                        shadow
+                        overflow-hidden
+                        sm:rounded-lg
+                        pb-24
+                      "
                     >
                       <div
                         class="
@@ -61,17 +67,28 @@
                           <b>floods</b>, <b>landslides</b>, and
                           <b>storm surges</b> and what you can do about it.
                         </p>
-                        <div class="md:flex items-center justify-center">
-                          <div class="md:flex-shrink-1 w-full">
-                            <div class="p-1 px-4 sm:px-20 pb-2 pt-4">
-                              <noah-search
-                                [searchTerm]="searchTerm"
-                                (selectPlace)="selectPlace($event)"
-                                class="invisible md:visible"
-                              >
-                              </noah-search>
-                            </div>
-                          </div>
+                      </div>
+                    </div>
+                    <div
+                      class="
+                        absolute
+                        top-1/2
+                        p-12
+                        w-full
+                        z-40
+                        md:flex
+                        items-center
+                        justify-center
+                      "
+                    >
+                      <div class="md:flex-shrink-1 w-full">
+                        <div class="p-4 sm:px-20">
+                          <noah-search
+                            [searchTerm]="searchTerm"
+                            (selectPlace)="selectPlace($event)"
+                            class="visible"
+                          >
+                          </noah-search>
                         </div>
                       </div>
                     </div>
