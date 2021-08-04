@@ -139,8 +139,10 @@
         <ul class="my-2 flex w-full flex-wrap">
           <!-- SEARCH -->
           <div class="w-full">
-            <noah-search>
-              [searchTerm]="searchTerm" (selectPlace)="selectPlace($event)" >
+            <noah-search
+              [searchTerm]="searchTerm"
+              (selectPlace)="selectPlace($event)"
+            >
             </noah-search>
           </div>
 

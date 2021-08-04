@@ -18,7 +18,7 @@ export class LandingPageComponent implements OnInit {
     const [lng, lat] = selectedPlace.center;
     this.kyhService.setCenter({ lat, lng });
     this.kyhService.setCurrentCoords({ lat, lng });
-    this.router.navigate(['/know-your-hazards']);
+    this.router.navigate(['know-your-hazards']);
   }
 
   gotoTop() {

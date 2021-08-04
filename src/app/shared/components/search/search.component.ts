@@ -5,12 +5,6 @@ import { KyhService } from '@features/know-your-hazards/services/kyh.service';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, filter, switchMap, tap } from 'rxjs/operators';
 
-type FixedLeyte = {
-  center: [number, number];
-  text: string;
-  place_name: string;
-};
-
 @Component({
   selector: 'noah-search',
   templateUrl: './search.component.html',
@@ -47,14 +41,6 @@ export class SearchComponent implements OnInit {
       .subscribe((value: any) => {
         this.places$.next(value.features);
       });
-  }
-
-  get fixedForLeyte(): FixedLeyte {
-    return {
-      center: [124.881119, 10.862454],
-      text: 'Leyte',
-      place_name: 'Leyte',
-    };
   }
 
   pickPlace(place) {
