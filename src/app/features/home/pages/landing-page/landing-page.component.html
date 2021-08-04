@@ -16,34 +16,43 @@
         </div>
         <div
           class="
-            pt-24
             container
             mx-auto
             flex
             content-center
             items-center
             justify-center
-            h-full
           "
         >
-          <!-- <div class="px-60 w-full flex-auto h-full">
+          <div class="relative w-full flex flex-wrap min-h-screen"></div>
+          <div
+            class="
+              fixed
+              inset-0
+              w-full
+              md:w-9/12
+              flex
+              justify-center
+              items-center
+            "
+          >
             <noah-search
               [searchTerm]="searchTerm"
               (selectPlace)="selectPlace($event)"
               class="px-4"
             >
             </noah-search>
-          </div> -->
-          <div class="content">
-            <div class="search-bar">
-              <noah-search
-                [searchTerm]="searchTerm"
-                (selectPlace)="selectPlace($event)"
-                class="px-4"
-              >
-              </noah-search>
-            </div>
           </div>
+          <!-- <div class="content p-4 bg-white m-auto">
+              <div class="search-bar">
+                <noah-search
+                  [searchTerm]="searchTerm"
+                  (selectPlace)="selectPlace($event)"
+                  class="px-4"
+                >
+                </noah-search>
+              </div>
+            </div> -->
         </div>
       </section>
     </div>

@@ -1,3 +1,4 @@
+<!-- SEARCH CONTAINER -->
 <div class="relative">
   <div class="pt-2">
     <div
@@ -66,11 +67,10 @@
 
   <!-- DROPDOWN -->
   <div
-    class="relative mt-2 py-2 bg-white shadow-xl rounded-md z-10"
+    class="absolute mt-2 py-2 w-full bg-white shadow-xl rounded-md z-10"
     *ngIf="isDropdownOpen && (places$ | async)?.length"
   >
     <button
-      [routerLink]="['/know-your-hazards']"
       (click)="pickPlace(fixedForLeyte)"
       class="
         block
@@ -100,7 +100,6 @@
       </div>
     </button>
     <button
-      [routerLink]="['/know-your-hazards']"
       (click)="pickPlace(place)"
       *ngFor="let place of places$ | async"
       class="
@@ -136,6 +135,6 @@
   <div
     (click)="isDropdownOpen = false"
     *ngIf="isDropdownOpen"
-    class="fixed h-full top-0 right-0 bottom-0 left-0"
+    class="fixed h-full bg-black opacity-30 top-0 right-0 bottom-0 left-0"
   ></div>
 </div>
