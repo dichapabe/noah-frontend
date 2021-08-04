@@ -61,12 +61,5 @@ export class SearchComponent implements OnInit {
     this.searchTermCtrl.setValue(place.text);
     this.isDropdownOpen = false;
     this.selectPlace.emit(place);
-    console.log(place);
-
-    //fly to
-    // this.kyhService.setCurrentLocation(place.text);
-    // const [lng, lat] = place.center;
-    // this.kyhService.setCenter({ lat, lng });
-    // this.kyhService.setCurrentCoords({ lat, lng });
   }
 }
