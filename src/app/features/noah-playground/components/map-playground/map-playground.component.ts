@@ -42,6 +42,7 @@ import {
   HazardLevel,
   HazardType,
   LandslideHazards,
+  NoahPlaygroundStore,
   PH_DEFAULT_CENTER,
 } from '@features/noah-playground/store/noah-playground.store';
 import { NOAH_COLORS } from '@shared/mocks/noah-colors';
@@ -96,7 +97,8 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
     private mapService: MapService,
     private pgService: NoahPlaygroundService,
     private sensorChartService: SensorChartService,
-    private sensorService: SensorService
+    private sensorService: SensorService,
+    private store: NoahPlaygroundStore
   ) {}
 
   ngOnInit(): void {
@@ -256,9 +258,8 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
     });
 
     const _this = this;
-    this.map.on('mouseover', sensorType, (e) => {
-      _this.map.getCanvas().style.cursor = 'pointer';
 
+    this.map.on('mouseover', sensorType, (e) => {
       const coordinates = (e.features[0].geometry as any).coordinates.slice();
       const location = e.features[0].properties.location;
       const stationID = e.features[0].properties.station_id;
@@ -271,39 +272,46 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
       }
 
-      popUp
-        .setLngLat(coordinates)
-        .setHTML(
+      const sensors = {
+        ...this.store.state.sensors,
+      };
+
+      if (sensors.shown) {
+        _this.map.getCanvas().style.cursor = 'pointer';
+        popUp
+          .setLngLat(coordinates)
+          .setHTML(
+            `
+            <div style="color: #333333;">
+              <div><strong>#${stationID} - ${location}</strong></div>
+              <div>Type: ${typeName}</div>
+              <div>Status: ${status}</div>
+              <div>Date Installed: ${dateInstalled}</div>
+              <div>Province: ${province}</div>
+            </div>
           `
-          <div style="color: #333333;">
-            <div><strong>#${stationID} - ${location}</strong></div>
-            <div>Type: ${typeName}</div>
-            <div>Status: ${status}</div>
-            <div>Date Installed: ${dateInstalled}</div>
-            <div>Province: ${province}</div>
-          </div>
-        `
-        )
-        .addTo(_this.map);
-    });
+          )
+          .addTo(_this.map);
 
-    this.map.on('click', sensorType, function (e) {
-      graphDiv.hidden = false;
-      _this.map.flyTo({
-        center: (e.features[0].geometry as any).coordinates.slice(),
-        zoom: 11,
-        essential: true,
-      });
+        this.map.on('click', sensorType, function (e) {
+          graphDiv.hidden = false;
+          _this.map.flyTo({
+            center: (e.features[0].geometry as any).coordinates.slice(),
+            zoom: 11,
+            essential: true,
+          });
 
-      const stationID = e.features[0].properties.station_id;
-      const location = e.features[0].properties.location;
-      const pk = e.features[0].properties.pk;
+          const stationID = e.features[0].properties.station_id;
+          const location = e.features[0].properties.location;
+          const pk = e.features[0].properties.pk;
 
-      popUp.setDOMContent(graphDiv).setMaxWidth('900px');
+          popUp.setDOMContent(graphDiv).setMaxWidth('900px');
 
-      _this.showChart(+pk, +stationID, location, sensorType);
+          _this.showChart(+pk, +stationID, location, sensorType);
 
-      _this._graphShown = true;
+          _this._graphShown = true;
+        });
+      }
     });
 
     popUp.on('close', () => (_this._graphShown = false));
