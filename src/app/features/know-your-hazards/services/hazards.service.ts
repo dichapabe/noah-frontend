@@ -89,32 +89,6 @@ export class HazardsService {
     return this._formatRiskLevel(feature);
   }
 
-  private _getCriticalFacility(
-    featureList: CriticalFacilityFeature[]
-  ): MapItem[] {
-    const getType = (layerName: string) => {
-      switch (layerName) {
-        case 'fire_station':
-          return 'fire-station';
-        case 'hospitals':
-          return 'hospital';
-        case 'police_station':
-          return 'police-station';
-        case 'schools':
-          return 'school';
-        default:
-          throw new Error('critical facility layer not found!');
-      }
-    };
-
-    return featureList.map((feature) => ({
-      coords: feature.geometry.coordinates,
-      name: feature.properties.name,
-      type: getType(feature.properties.tilequery.layer),
-      distance: feature.properties.tilequery.distance / 1000, // to km
-    }));
-  }
-
   /**
    * Handle Http operation that failed.
    * Let the app continue.
