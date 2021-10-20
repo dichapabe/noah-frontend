@@ -314,6 +314,7 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
             _this._graphShown = true;
           });
         } else {
+          popUp.remove();
           this.map.on('mouseover', sensorType, (e) => {
             _this._graphShown = false;
             _this.map.getCanvas().style.cursor = '';
