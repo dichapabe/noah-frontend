@@ -97,8 +97,7 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
     private mapService: MapService,
     private pgService: NoahPlaygroundService,
     private sensorChartService: SensorChartService,
-    private sensorService: SensorService,
-    private store: NoahPlaygroundStore
+    private sensorService: SensorService
   ) {}
 
   ngOnInit(): void {
@@ -256,63 +255,70 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
       closeButton: true,
       closeOnClick: false,
     });
-
     const _this = this;
 
-    this.map.on('mouseover', sensorType, (e) => {
-      const coordinates = (e.features[0].geometry as any).coordinates.slice();
-      const location = e.features[0].properties.location;
-      const stationID = e.features[0].properties.station_id;
-      const typeName = e.features[0].properties.type_name;
-      const status = e.features[0].properties.status_description;
-      const dateInstalled = e.features[0].properties.date_installed;
-      const province = e.features[0].properties.province;
+    this.pgService.sensorsGroupShown$
+      .pipe(takeUntil(this._changeStyle), takeUntil(this._unsub))
+      .subscribe((groupShown) => {
+        if (groupShown) {
+          this.map.on('mouseover', sensorType, (e) => {
+            const coordinates = (
+              e.features[0].geometry as any
+            ).coordinates.slice();
+            const location = e.features[0].properties.location;
+            const stationID = e.features[0].properties.station_id;
+            const typeName = e.features[0].properties.type_name;
+            const status = e.features[0].properties.status_description;
+            const dateInstalled = e.features[0].properties.date_installed;
+            const province = e.features[0].properties.province;
 
-      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-      }
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+              coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
 
-      const sensors = {
-        ...this.store.state.sensors,
-      };
-
-      if (sensors.shown) {
-        _this.map.getCanvas().style.cursor = 'pointer';
-        popUp
-          .setLngLat(coordinates)
-          .setHTML(
+            _this.map.getCanvas().style.cursor = 'pointer';
+            popUp
+              .setLngLat(coordinates)
+              .setHTML(
+                `
+              <div style="color: #333333;">
+                <div><strong>#${stationID} - ${location}</strong></div>
+                <div>Type: ${typeName}</div>
+                <div>Status: ${status}</div>
+                <div>Date Installed: ${dateInstalled}</div>
+                <div>Province: ${province}</div>
+              </div>
             `
-            <div style="color: #333333;">
-              <div><strong>#${stationID} - ${location}</strong></div>
-              <div>Type: ${typeName}</div>
-              <div>Status: ${status}</div>
-              <div>Date Installed: ${dateInstalled}</div>
-              <div>Province: ${province}</div>
-            </div>
-          `
-          )
-          .addTo(_this.map);
+              )
+              .addTo(_this.map);
 
-        this.map.on('click', sensorType, function (e) {
-          graphDiv.hidden = false;
-          _this.map.flyTo({
-            center: (e.features[0].geometry as any).coordinates.slice(),
-            zoom: 11,
-            essential: true,
+            this.map.on('click', sensorType, function (e) {
+              graphDiv.hidden = false;
+              _this.map.flyTo({
+                center: (e.features[0].geometry as any).coordinates.slice(),
+                zoom: 11,
+                essential: true,
+              });
+
+              const stationID = e.features[0].properties.station_id;
+              const location = e.features[0].properties.location;
+              const pk = e.features[0].properties.pk;
+
+              popUp.setDOMContent(graphDiv).setMaxWidth('900px');
+
+              _this.showChart(+pk, +stationID, location, sensorType);
+
+              _this._graphShown = true;
+            });
           });
-
-          const stationID = e.features[0].properties.station_id;
-          const location = e.features[0].properties.location;
-          const pk = e.features[0].properties.pk;
-
-          popUp.setDOMContent(graphDiv).setMaxWidth('900px');
-
-          _this.showChart(+pk, +stationID, location, sensorType);
-
-          _this._graphShown = true;
-        });
-      }
-    });
+        } else {
+          this.map.on('mouseover', sensorType, (e) => {
+            _this._graphShown = false;
+            _this.map.getCanvas().style.cursor = '';
+            popUp.remove();
+          });
+        }
+      });
 
     popUp.on('close', () => (_this._graphShown = false));
 
