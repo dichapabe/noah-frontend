@@ -257,10 +257,13 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
     });
     const _this = this;
 
-    this.pgService.sensorsGroupShown$
+    combineLatest([
+      this.pgService.sensorsGroupShown$,
+      this.pgService.getSensorTypeShown$(sensorType),
+    ])
       .pipe(takeUntil(this._changeStyle), takeUntil(this._unsub))
-      .subscribe((groupShown) => {
-        if (groupShown) {
+      .subscribe(([groupShown, soloShown]) => {
+        if (groupShown && soloShown) {
           this.map.on('mouseover', sensorType, (e) => {
             const coordinates = (
               e.features[0].geometry as any
@@ -291,31 +294,34 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
             `
               )
               .addTo(_this.map);
-
-            this.map.on('click', sensorType, function (e) {
-              graphDiv.hidden = false;
-              _this.map.flyTo({
-                center: (e.features[0].geometry as any).coordinates.slice(),
-                zoom: 11,
-                essential: true,
-              });
-
-              const stationID = e.features[0].properties.station_id;
-              const location = e.features[0].properties.location;
-              const pk = e.features[0].properties.pk;
-
-              popUp.setDOMContent(graphDiv).setMaxWidth('900px');
-
-              _this.showChart(+pk, +stationID, location, sensorType);
-
-              _this._graphShown = true;
+          });
+          this.map.on('click', sensorType, function (e) {
+            graphDiv.hidden = false;
+            _this.map.flyTo({
+              center: (e.features[0].geometry as any).coordinates.slice(),
+              zoom: 11,
+              essential: true,
             });
+
+            const stationID = e.features[0].properties.station_id;
+            const location = e.features[0].properties.location;
+            const pk = e.features[0].properties.pk;
+
+            popUp.setDOMContent(graphDiv).setMaxWidth('900px');
+
+            _this.showChart(+pk, +stationID, location, sensorType);
+
+            _this._graphShown = true;
           });
         } else {
           this.map.on('mouseover', sensorType, (e) => {
             _this._graphShown = false;
             _this.map.getCanvas().style.cursor = '';
             popUp.remove();
+          });
+          this.map.on('click', sensorType, function (e) {
+            _this.map.flyTo({});
+            _this._graphShown = false;
           });
         }
       });
