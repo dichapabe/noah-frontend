@@ -244,7 +244,12 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
 
           // show mouse event listeners
           this.showDataPoints(sensorType);
-        });
+        })
+        .catch(() =>
+          console.error(
+            `Unable to fetch data from DOST for sensors of type "${sensorType}"`
+          )
+        );
     });
   }
 
