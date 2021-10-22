@@ -42,7 +42,6 @@ import {
   HazardLevel,
   HazardType,
   LandslideHazards,
-  NoahPlaygroundStore,
   PH_DEFAULT_CENTER,
 } from '@features/noah-playground/store/noah-playground.store';
 import { NOAH_COLORS } from '@shared/mocks/noah-colors';
