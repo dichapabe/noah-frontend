@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { KyhService } from '@features/know-your-hazards/services/kyh.service';
 import {
   HazardType,
@@ -55,14 +56,15 @@ export class KnowYourHazardsComponent implements OnInit {
     );
   }
 
-  constructor(private kyhService: KyhService) {
+  constructor(private kyhService: KyhService, private title: Title) {}
+
+  ngOnInit(): void {
+    this.title.setTitle('NOAH - Know Your Hazards');
     this.floodRiskLevel$ = this.kyhService.floodRiskLevel$;
     this.stormSurgeRiskLevel$ = this.kyhService.stormSurgeRiskLevel$;
     this.landslideRiskLevel$ = this.kyhService.landslideRiskLevel$;
     this.isLoading$ = this.kyhService.isLoading$;
-  }
 
-  ngOnInit(): void {
     this.kyhService.init();
     this.kyhService.setCurrentPage('know-your-hazards');
     this.currentLocation$ = this.kyhService.currentLocation$;
