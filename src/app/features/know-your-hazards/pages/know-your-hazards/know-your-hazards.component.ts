@@ -5,6 +5,7 @@ import {
   HazardType,
   RiskLevel,
 } from '@features/know-your-hazards/store/kyh.store';
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -56,7 +57,11 @@ export class KnowYourHazardsComponent implements OnInit {
     );
   }
 
-  constructor(private kyhService: KyhService, private title: Title) {}
+  constructor(
+    private gaService: GoogleAnalyticsService,
+    private kyhService: KyhService,
+    private title: Title
+  ) {}
 
   ngOnInit(): void {
     this.title.setTitle('NOAH - Know Your Hazards');
@@ -71,6 +76,11 @@ export class KnowYourHazardsComponent implements OnInit {
   }
 
   viewHazardLayer(currentHazard: HazardType) {
+    this.gaService.event(
+      'view_hazard_info',
+      'know_your_hazards',
+      currentHazard
+    );
     this.kyhService.setCurrentPage(currentHazard);
   }
 
