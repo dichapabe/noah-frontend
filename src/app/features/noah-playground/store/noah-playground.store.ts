@@ -74,10 +74,20 @@ export type CriticalFacilityTypeState = {
   opacity: number;
 };
 
-export type WeatherState = {
+export type WeatherSatelliteTypeState = {
+  shown: boolean;
+  opacity: number;
+};
+
+export type WeatherSatelliteTypesState = {
+  himawari: WeatherSatelliteTypeState;
+  'himawari-gsmap': WeatherSatelliteTypeState;
+};
+
+export type WeatherSatelliteState = {
   shown: boolean;
   expanded: boolean;
-  opacity: number;
+  types: WeatherSatelliteTypesState;
 };
 
 export type CriticalFacilityTypesState = {
@@ -105,7 +115,7 @@ type NoahPlaygroundState = {
   landslide: LandslideState;
   'storm-surge': StormSurgeState;
   criticalFacilities: CriticalFacilitiesState;
-  weather: WeatherState;
+  weatherSatellite: WeatherSatelliteState;
   center: { lng: number; lat: number };
   currentLocation: string;
   sensors: SensorsState;
@@ -217,10 +227,19 @@ const createInitialValue = (): NoahPlaygroundState => ({
       },
     },
   },
-  weather: {
+  weatherSatellite: {
     shown: false,
     expanded: false,
-    opacity: 80,
+    types: {
+      himawari: {
+        shown: true,
+        opacity: 80,
+      },
+      'himawari-gsmap': {
+        shown: false,
+        opacity: 80,
+      },
+    },
   },
   center: null,
   currentLocation: '-----',
