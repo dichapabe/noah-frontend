@@ -35,6 +35,8 @@ export type LandslideHazards =
 
 export type ContourMapType = '1hr' | '3hr' | '6hr' | '12hr' | '24hr';
 
+export type WeatherSatelliteType = 'himawari' | 'himawari-gsmap';
+
 export type HazardLevel =
   | FloodReturnPeriod
   | StormSurgeAdvisory
@@ -74,22 +76,6 @@ export type CriticalFacilityTypeState = {
   opacity: number;
 };
 
-export type WeatherSatelliteTypeState = {
-  shown: boolean;
-  opacity: number;
-};
-
-export type WeatherSatelliteTypesState = {
-  himawari: WeatherSatelliteTypeState;
-  'himawari-gsmap': WeatherSatelliteTypeState;
-};
-
-export type WeatherSatelliteState = {
-  shown: boolean;
-  expanded: boolean;
-  types: WeatherSatelliteTypesState;
-};
-
 export type CriticalFacilityTypesState = {
   'fire-station': CriticalFacilityTypeState;
   'police-station': CriticalFacilityTypeState;
@@ -101,6 +87,17 @@ export type CriticalFacilitiesState = {
   shown: boolean;
   expanded: boolean;
   types: CriticalFacilityTypesState;
+};
+
+export type WeatherSatelliteState = {
+  shown: boolean;
+  expanded: boolean;
+  selectedType: Record<WeatherSatelliteType, WeatherSatelliteTypeState>;
+};
+
+export type WeatherSatelliteTypeState = {
+  opacity: number;
+  shown: boolean;
 };
 
 export type SensorsState = {
@@ -230,7 +227,7 @@ const createInitialValue = (): NoahPlaygroundState => ({
   weatherSatellite: {
     shown: false,
     expanded: false,
-    types: {
+    selectedType: {
       himawari: {
         shown: true,
         opacity: 80,
