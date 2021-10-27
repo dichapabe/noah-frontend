@@ -15,6 +15,10 @@ import { MapKyhComponent } from './components/map-kyh/map-kyh.component';
 import { StormSurgeKyhComponent } from './components/storm-surge-kyh/storm-surge-kyh.component';
 import { SharedModule } from '@shared/shared.module';
 import { SurvivalKitComponent } from './components/survival-kit/survival-kit.component';
+import { BaseComponent } from './pages/base/base.component';
+import { FloodComponent } from './pages/flood/flood.component';
+import { LandslidesComponent } from './pages/landslides/landslides.component';
+import { StormSurgeComponent } from './pages/storm-surge/storm-surge.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +29,10 @@ import { SurvivalKitComponent } from './components/survival-kit/survival-kit.com
     MapKyhComponent,
     StormSurgeKyhComponent,
     SurvivalKitComponent,
+    BaseComponent,
+    FloodComponent,
+    LandslidesComponent,
+    StormSurgeComponent,
   ],
   imports: [CommonModule, KnowYourHazardsRoutingModule, SharedModule],
 })
