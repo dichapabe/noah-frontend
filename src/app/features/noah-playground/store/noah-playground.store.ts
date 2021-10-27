@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/services/store-service.service';
-import { CriticalFacility } from '@shared/mocks/critical-facilities';
 import { NoahColor } from '@shared/mocks/noah-colors';
 import { SensorType } from '../services/sensor.service';
 
@@ -33,7 +32,13 @@ export type LandslideHazards =
   | 'debris-flow'
   | 'unstable-slopes-maps';
 
-export type ContourMapType = '1hr' | '3hr' | '6hr' | '12hr' | '24hr';
+export type ContourMapType =
+  | '1hr'
+  | '3hr'
+  | '6hr'
+  | '12hr'
+  | '24hr'
+  | '24hr-lapse';
 
 export type HazardLevel =
   | FloodReturnPeriod
