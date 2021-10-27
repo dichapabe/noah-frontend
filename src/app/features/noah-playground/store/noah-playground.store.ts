@@ -92,7 +92,8 @@ export type CriticalFacilitiesState = {
 export type WeatherSatelliteState = {
   shown: boolean;
   expanded: boolean;
-  selectedType: Record<WeatherSatelliteType, WeatherSatelliteTypeState>;
+  selectedType: WeatherSatelliteType;
+  types: Record<WeatherSatelliteType, WeatherSatelliteTypeState>;
 };
 
 export type WeatherSatelliteTypeState = {
@@ -227,7 +228,8 @@ const createInitialValue = (): NoahPlaygroundState => ({
   weatherSatellite: {
     shown: false,
     expanded: false,
-    selectedType: {
+    selectedType: 'himawari',
+    types: {
       himawari: {
         shown: true,
         opacity: 80,
