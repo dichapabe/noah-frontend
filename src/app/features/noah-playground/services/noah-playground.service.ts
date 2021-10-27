@@ -10,8 +10,8 @@ import {
   HazardLevelState,
   CriticalFacilitiesState,
   CriticalFacilityTypeState,
-  WeatherState,
   ContourMapType,
+  WeatherSatelliteState,
 } from '../store/noah-playground.store';
 import { NoahColor } from '@shared/mocks/noah-colors';
 import { Observable, pipe } from 'rxjs';
@@ -20,6 +20,7 @@ import { CriticalFacility } from '@shared/mocks/critical-facilities';
 import { SENSORS, SensorService, SensorType } from './sensor.service';
 import { HttpClient } from '@angular/common/http';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
+import { state } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root',
@@ -58,8 +59,22 @@ export class NoahPlaygroundService {
     return this.store.state$.pipe(map((state) => state.sensors.expanded));
   }
 
-  get weather$(): Observable<WeatherState> {
-    return this.store.state$.pipe(map((state) => state.weather));
+  // get weather$(): Observable<WeatherState> {
+  //   return this.store.state$.pipe(map((state) => state.weather));
+  // }
+
+  get weatherSatelliteGroupExpanded$(): Observable<boolean> {
+    return this.store.state$.pipe(
+      map((state) => state.weatherSatellite.expanded)
+    );
+  }
+
+  get weatherSatelliteGroupShown$(): Observable<boolean> {
+    return this.store.state$.pipe(map((state) => state.weatherSatellite.shown));
+  }
+
+  get selectedWeatherSatellite$(): Observable<WeatherSatelliteState> {
+    return this.store.state$.pipe(map((state) => state.weatherSatellite));
   }
 
   get contourMapGroupExpanded$(): Observable<boolean> {
@@ -109,8 +124,12 @@ export class NoahPlaygroundService {
     return this.store.state.exaggeration;
   }
 
-  getWeather(): WeatherState {
-    return this.store.state.weather;
+  // getWeather(): WeatherState {
+  //   return this.store.state.weather;
+  // }
+
+  getWeatherSatellite(): WeatherSatelliteState {
+    return this.store.state.weatherSatellite;
   }
 
   getHazard(
@@ -315,8 +334,12 @@ export class NoahPlaygroundService {
     );
   }
 
-  setWeather(weather: WeatherState) {
-    this.store.patch({ weather }, 'updated weather state');
+  // setWeather(weather: WeatherState) {
+  //   this.store.patch({ weather }, 'updated weather state');
+  // }
+
+  setWeatherSatellite(weatherSatellite: WeatherSatelliteState) {
+    this.store.patch({ weatherSatellite }, 'updated weather satellite state');
   }
 
   selectContourMapType(type: ContourMapType): void {
