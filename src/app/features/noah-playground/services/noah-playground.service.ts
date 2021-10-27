@@ -12,6 +12,7 @@ import {
   CriticalFacilityTypeState,
   ContourMapType,
   WeatherSatelliteState,
+  WeatherSatelliteType,
 } from '../store/noah-playground.store';
 import { NoahColor } from '@shared/mocks/noah-colors';
 import { Observable, pipe } from 'rxjs';
@@ -59,10 +60,6 @@ export class NoahPlaygroundService {
     return this.store.state$.pipe(map((state) => state.sensors.expanded));
   }
 
-  // get weather$(): Observable<WeatherState> {
-  //   return this.store.state$.pipe(map((state) => state.weather));
-  // }
-
   get weatherSatelliteGroupExpanded$(): Observable<boolean> {
     return this.store.state$.pipe(
       map((state) => state.weatherSatellite.expanded)
@@ -73,8 +70,10 @@ export class NoahPlaygroundService {
     return this.store.state$.pipe(map((state) => state.weatherSatellite.shown));
   }
 
-  get selectedWeatherSatellite$(): Observable<WeatherSatelliteState> {
-    return this.store.state$.pipe(map((state) => state.weatherSatellite));
+  get selectedWeatherSatellite$(): Observable<WeatherSatelliteType> {
+    return this.store.state$.pipe(
+      map((state) => state.weatherSatellite.selectedType)
+    );
   }
 
   get contourMapGroupExpanded$(): Observable<boolean> {
@@ -124,14 +123,6 @@ export class NoahPlaygroundService {
     return this.store.state.exaggeration;
   }
 
-  // getWeather(): WeatherState {
-  //   return this.store.state.weather;
-  // }
-
-  getWeatherSatellite(): WeatherSatelliteState {
-    return this.store.state.weatherSatellite;
-  }
-
   getHazard(
     hazardType: HazardType
   ): FloodState | StormSurgeState | LandslideState {
@@ -167,6 +158,10 @@ export class NoahPlaygroundService {
     return this.store.state[hazardType].levels[hazardLevel].shown;
   }
 
+  getWeatherSatellites(): WeatherSatelliteState {
+    return this.store.state.weatherSatellite;
+  }
+
   setHazardLevelOpacity(
     opacity: number,
     hazardType: HazardType,
@@ -185,6 +180,14 @@ export class NoahPlaygroundService {
   getSensorTypeShown$(sensorType: SensorType): Observable<boolean> {
     return this.store.state$.pipe(
       map((state) => state.sensors.types[sensorType].shown)
+    );
+  }
+
+  getWeatherSatelliteTypeShown$(
+    weatherSatelliteType: WeatherSatelliteType
+  ): Observable<boolean> {
+    return this.store.state$.pipe(
+      map((state) => state.weatherSatellite.types[weatherSatelliteType].shown)
     );
   }
 
@@ -334,12 +337,38 @@ export class NoahPlaygroundService {
     );
   }
 
-  // setWeather(weather: WeatherState) {
-  //   this.store.patch({ weather }, 'updated weather state');
-  // }
-
   setWeatherSatellite(weatherSatellite: WeatherSatelliteState) {
     this.store.patch({ weatherSatellite }, 'updated weather satellite state');
+  }
+
+  selectWeatherSatelliteType(weatherSatelliteType: WeatherSatelliteType): void {
+    const weatherSatellite = {
+      ...this.store.state.weatherSatellite,
+    };
+
+    weatherSatellite.selectedType = weatherSatelliteType;
+    this.store.patch(
+      { weatherSatellite },
+      `select weather satellite type: ${weatherSatelliteType}`
+    );
+  }
+
+  toggleWeatherSatellitepGroupVisibility(): void {
+    const weatherSatellite = {
+      ...this.store.state.weatherSatellite,
+    };
+
+    weatherSatellite.shown = !weatherSatellite.shown;
+    this.store.patch({ weatherSatellite }, `toggle weather visibility`);
+  }
+
+  toggleWeatherSatelliteGroupExpansion(): void {
+    const weatherSatellite = {
+      ...this.store.state.weatherSatellite,
+    };
+
+    weatherSatellite.expanded = !weatherSatellite.expanded;
+    this.store.patch({ weatherSatellite }, `toggle weather expansion`);
   }
 
   selectContourMapType(type: ContourMapType): void {
