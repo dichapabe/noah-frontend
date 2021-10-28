@@ -8,12 +8,7 @@ import {
   shareReplay,
   switchMap,
 } from 'rxjs/operators';
-import {
-  HazardType,
-  KyhStore,
-  RiskLevel,
-  ExposureLevel,
-} from '../store/kyh.store';
+import { HazardType, KyhStore, ExposureLevel } from '../store/kyh.store';
 import { HazardsService } from './hazards.service';
 
 @Injectable({
@@ -54,11 +49,11 @@ export class KyhService {
       map((state) => {
         switch (hazardType) {
           case 'flood':
-            return state.floodRiskLevel;
+            return state.exposureLevels.flood;
           case 'landslide':
-            return state.landslideRiskLevel;
+            return state.exposureLevels.landslide;
           case 'storm-surge':
-            return state.stormSurgeRiskLevel;
+            return state.exposureLevels['storm-surge'];
           default:
             throw new Error(`Invalid hazard type ${hazardType}`);
         }
@@ -88,18 +83,6 @@ export class KyhService {
     );
   }
 
-  get floodRiskLevel$(): Observable<RiskLevel> {
-    return this.kyhStore.state$.pipe(map((state) => state.floodRiskLevel));
-  }
-
-  get stormSurgeRiskLevel$(): Observable<RiskLevel> {
-    return this.kyhStore.state$.pipe(map((state) => state.stormSurgeRiskLevel));
-  }
-
-  get landslideRiskLevel$(): Observable<RiskLevel> {
-    return this.kyhStore.state$.pipe(map((state) => state.landslideRiskLevel));
-  }
-
   get hazardTypes(): HazardType[] {
     return ['flood', 'landslide', 'storm-surge'];
   }
@@ -108,44 +91,29 @@ export class KyhService {
     this.kyhStore.patch(
       {
         isLoading: true,
-        floodRiskLevel: 'unavailable',
-        landslideRiskLevel: 'unavailable',
-        stormSurgeRiskLevel: 'unavailable',
+        exposureLevels: {
+          flood: 'unavailable',
+          landslide: 'unavailable',
+          'storm-surge': 'unavailable',
+        },
       },
-      'loading risk level...'
+      'loading exposure levels...'
     );
 
-    const payloadFlood = {
+    const payload = {
       coords: this.kyhStore.state.center,
-      tilesetName: this._getTilesetName('flood'),
-    };
-    const payloadStormSurge = {
-      coords: this.kyhStore.state.center,
-      tilesetName: this._getTilesetName('storm-surge'),
-    };
-    const payloadLandslide = {
-      coords: this.kyhStore.state.center,
-      tilesetName: this._getTilesetName('landslide'),
+      tilesetName: this._getAllTilesetNames(),
     };
 
-    const floodRiskLevel = await this.hazardsService
-      .assess(payloadFlood)
+    const exposureLevels = await this.hazardsService
+      .assess(payload)
       .toPromise();
-    const stormSurgeRiskLevel = await this.hazardsService
-      .assess(payloadStormSurge)
-      .toPromise();
-    const landslideRiskLevel = await this.hazardsService
-      .assess(payloadLandslide)
-      .toPromise();
-
     this.kyhStore.patch(
       {
         isLoading: false,
-        floodRiskLevel: floodRiskLevel as RiskLevel,
-        stormSurgeRiskLevel: stormSurgeRiskLevel as RiskLevel,
-        landslideRiskLevel: landslideRiskLevel as RiskLevel,
+        exposureLevels,
       },
-      `updated risk level --`
+      `updated hazard exposure level for all`
     );
   }
 
@@ -188,5 +156,20 @@ export class KyhService {
       default:
         return '';
     }
+  }
+
+  private _getAllTilesetNames(): string {
+    const tilesetNames = {
+      flood: 'upri-noah.ph_fh_100yr_tls,upri-noah.ph_fh_nodata_tls',
+      landslide:
+        'upri-noah.ph_lh_lh1_tls,upri-noah.ph_lh_lh2_tls,upri-noah.ph_lh_lh3_tls',
+      'storm-surge': 'upri-noah.ph_ssh_ssa4_tls',
+    };
+
+    return `${
+      (tilesetNames['flood'],
+      tilesetNames['landslide'],
+      tilesetNames['storm-surge'])
+    }`;
   }
 }
