@@ -35,7 +35,7 @@ export type LandslideHazards =
 
 export type ContourMapType = '1hr' | '3hr' | '6hr' | '12hr' | '24hr';
 
-export type WeatherSatelliteType = 'himawari' | 'himawari-gsmap';
+export type WeatherSatelliteType = 'himawari' | 'himawari-GSMAP';
 
 export type HazardLevel =
   | FloodReturnPeriod
@@ -234,7 +234,7 @@ const createInitialValue = (): NoahPlaygroundState => ({
         shown: true,
         opacity: 80,
       },
-      'himawari-gsmap': {
+      'himawari-GSMAP': {
         shown: false,
         opacity: 80,
       },

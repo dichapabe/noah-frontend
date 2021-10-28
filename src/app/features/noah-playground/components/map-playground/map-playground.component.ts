@@ -574,11 +574,7 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
           })
         )
         .subscribe((opacity: number) => {
-          this.map.setPaintProperty(
-            weatherType,
-            'raster-opacity',
-            opacity / 100
-          );
+          this.map.setPaintProperty(weatherType, 'raster-opacity', opacity);
         });
     });
   }

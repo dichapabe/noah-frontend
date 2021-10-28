@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NoahPlaygroundService } from '@features/noah-playground/services/noah-playground.service';
-import { WeatherState } from '@features/noah-playground/store/noah-playground.store';
+import {
+  WeatherSatelliteType,
+  WeatherSatelliteState,
+} from '@features/noah-playground/store/noah-playground.store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'noah-weather',
@@ -8,57 +12,47 @@ import { WeatherState } from '@features/noah-playground/store/noah-playground.st
   styleUrls: ['./weather.component.scss'],
 })
 export class WeatherComponent implements OnInit {
-  weather: WeatherState;
+  weatherSatellite: WeatherSatelliteType[] = ['himawari', 'himawari-GSMAP'];
 
-  get expanded(): boolean {
-    return this.weather.expanded;
-  }
+  expanded$: Observable<boolean>;
+  selectedWeatherSatellite$: Observable<WeatherSatelliteType>;
+  shown$: Observable<boolean>;
 
-  get opacity(): number {
-    return this.weather.opacity;
-  }
-
-  get shown(): boolean {
-    return this.weather.shown;
-  }
+  // get opacity(): number {
+  //   return this.weatherSatellite.opacity;
+  // }
 
   constructor(private pgService: NoahPlaygroundService) {}
 
   ngOnInit(): void {
     // The only time we get the value from the state directly is when we're
     // initializing the value
-    this.weather = this.pgService.getWeather();
+    this.expanded$ = this.pgService.weatherSatelliteGroupExpanded$;
+    this.selectedWeatherSatellite$ = this.pgService.selectedWeatherSatellite$;
+    this.shown$ = this.pgService.weatherSatelliteGroupShown$;
   }
 
-  changeExaggerationLevel(opacity: number) {
-    this.weather = {
-      ...this.weather,
-      opacity,
-    };
+  // changeExaggerationLevel(opacity: number) {
+  //   this.weatherSatellite = {
+  //     ...this.weatherSatellite,
+  //     opacity,
+  //   };
 
-    this.pgService.setWeather(this.weather);
-  }
+  //   this.pgService.setWeatherSatellite(this.weatherSatellite);
+  // }
 
-  toggleExpand() {
-    const expanded = !this.expanded;
-    this.weather = {
-      ...this.weather,
-      expanded: expanded,
-    };
-
-    this.pgService.setWeather(this.weather);
+  toggleExpanded() {
+    this.pgService.toggleWeatherSatelliteGroupExpansion();
   }
 
   toggleShown(event: Event) {
     event.stopPropagation();
     event.stopImmediatePropagation();
 
-    const shown = !this.shown;
-    this.weather = {
-      ...this.weather,
-      shown,
-    };
+    this.pgService.toggleWeatherSatellitepGroupVisibility();
+  }
 
-    this.pgService.setWeather(this.weather);
+  selectWeatherSatellite(weatherSatelliteType: WeatherSatelliteType) {
+    this.pgService.selectWeatherSatelliteType(weatherSatelliteType);
   }
 }
