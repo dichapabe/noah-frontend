@@ -10,7 +10,13 @@ import {
   switchMap,
   tap,
 } from 'rxjs/operators';
-import { HazardType, KyhStore, KYHPage, RiskLevel } from '../store/kyh.store';
+import {
+  HazardType,
+  KyhStore,
+  KYHPage,
+  RiskLevel,
+  ExposureLevel,
+} from '../store/kyh.store';
 import { HazardsService } from './hazards.service';
 
 @Injectable({
@@ -40,15 +46,26 @@ export class KyhService {
 
   getCriticalFacilities$(): Observable<FeatureCollection> {
     return this.center$.pipe(
-      tap((c) => console.log({ c })),
       distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
-      debounceTime(300),
-      tap((d) => console.log({ d })),
-      switchMap((coords) => {
-        console.log('switchMap getCriticalFacilities', coords);
-        return this.hazardsService.getCriticalFacilities(coords);
-      }),
+      switchMap((coords) => this.hazardsService.getCriticalFacilities(coords)),
       shareReplay(1)
+    );
+  }
+
+  getExposureLevel$(hazardType: HazardType): Observable<ExposureLevel> {
+    return this.kyhStore.state$.pipe(
+      map((state) => {
+        switch (hazardType) {
+          case 'flood':
+            return state.floodRiskLevel;
+          case 'landslide':
+            return state.landslideRiskLevel;
+          case 'storm-surge':
+            return state.stormSurgeRiskLevel;
+          default:
+            throw new Error(`Invalid hazard type ${hazardType}`);
+        }
+      })
     );
   }
 
