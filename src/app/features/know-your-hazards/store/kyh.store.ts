@@ -25,6 +25,7 @@ type KYHState = {
   center: { lng: number; lat: number };
   currentCoords: { lng: number; lat: number };
   currentLocation: string;
+  currentView: HazardType | 'all';
   exposureLevels: HazardExposureLevel;
 };
 
@@ -34,6 +35,7 @@ const createInitialValue = (): KYHState => {
     center: PH_DEFAULT_CENTER,
     currentCoords: PH_DEFAULT_CENTER,
     currentLocation: '',
+    currentView: 'all',
     exposureLevels: {
       flood: 'unavailable',
       landslide: 'unavailable',

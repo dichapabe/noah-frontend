@@ -31,6 +31,7 @@ export class MapKyhComponent implements OnInit {
   isMapboxAttrib;
   isOpenedList;
   private _unsub = new Subject();
+  private _changeStyle = new Subject();
 
   constructor(
     private gaService: GoogleAnalyticsService,
@@ -209,7 +210,7 @@ export class MapKyhComponent implements OnInit {
           .isHazardShown$(hazardType)
           .pipe(
             takeUntil(this._unsub),
-            // takeUntil(this._changeStyle),
+            takeUntil(this._changeStyle),
             distinctUntilChanged()
           )
           .subscribe((shown: boolean) => {
@@ -313,6 +314,7 @@ export class MapKyhComponent implements OnInit {
       this.gaService.event('switch_map_style', 'know_your_hazards', style);
       this.mapStyle = style;
       this.map.setStyle(environment.mapbox.styles[style]);
+      this._changeStyle.next();
     }
   }
 }

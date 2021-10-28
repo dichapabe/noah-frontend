@@ -123,7 +123,13 @@ export class KyhService {
   }
 
   isHazardShown$(hazardType: HazardType): Observable<boolean> {
-    return this.kyhStore.state$.pipe(map((state) => state[hazardType].shown));
+    return this.kyhStore.state$.pipe(
+      map((state) =>
+        state.currentView === 'all' || state.currentView === hazardType
+          ? true
+          : false
+      )
+    );
   }
 
   isHazardLayer(currentHazard: HazardType): boolean {
@@ -144,18 +150,11 @@ export class KyhService {
     this.gaService.event('change_location', 'know_your_hazards');
   }
 
-  // Temporary
-  private _getTilesetName(hazardTypes: HazardType): string {
-    switch (hazardTypes) {
-      case 'flood':
-        return 'upri-noah.ph_fh_100yr_tls,upri-noah.ph_fh_nodata_tls';
-      case 'landslide':
-        return 'upri-noah.ph_lh_lh1_tls,upri-noah.ph_lh_lh2_tls,upri-noah.ph_lh_lh3_tls';
-      case 'storm-surge':
-        return 'upri-noah.ph_ssh_ssa4_tls';
-      default:
-        return '';
-    }
+  setCurrentView(viewedHazard: HazardType | 'all'): void {
+    this.kyhStore.patch(
+      { currentView: viewedHazard },
+      `set current view to ${viewedHazard}`
+    );
   }
 
   private _getAllTilesetNames(): string {
@@ -166,10 +165,6 @@ export class KyhService {
       'storm-surge': 'upri-noah.ph_ssh_ssa4_tls',
     };
 
-    return `${
-      (tilesetNames['flood'],
-      tilesetNames['landslide'],
-      tilesetNames['storm-surge'])
-    }`;
+    return `${tilesetNames['flood']},${tilesetNames['landslide']},${tilesetNames['storm-surge']}`;
   }
 }

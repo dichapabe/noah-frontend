@@ -12,5 +12,6 @@ export class KnowYourHazardsComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle('NOAH - Know Your Hazards');
     this.kyhService.init();
+    this.kyhService.setCurrentView('all');
   }
 }
