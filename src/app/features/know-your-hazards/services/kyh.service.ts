@@ -3,29 +3,22 @@ import { FeatureCollection } from 'geojson';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { Observable, Subject } from 'rxjs';
 import {
+  debounceTime,
   distinctUntilChanged,
   map,
   shareReplay,
   switchMap,
+  tap,
 } from 'rxjs/operators';
-import {
-  HazardType,
-  KyhStore,
-  KYHPage,
-  RiskLevel,
-  PH_DEFAULT_CENTER,
-  ExposureLevel,
-} from '../store/kyh.store';
-import {
-  CriticalFacilityFeature,
-  HazardsService,
-  MapItem,
-} from './hazards.service';
+import { HazardType, KyhStore, KYHPage, RiskLevel } from '../store/kyh.store';
+import { HazardsService } from './hazards.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class KyhService {
+  criticalFacilities$: Observable<FeatureCollection>;
+
   constructor(
     private gaService: GoogleAnalyticsService,
     private kyhStore: KyhStore,
@@ -36,17 +29,25 @@ export class KyhService {
   sendMessage(message: any) {
     this.keyBoard.next(message);
   }
+
   get center$(): Observable<{ lng: number; lat: number }> {
     return this.kyhStore.state$.pipe(
       map((state) => state.center),
+      distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
       shareReplay(1)
     );
   }
 
-  get criticalFacilities$(): Observable<FeatureCollection> {
+  getCriticalFacilities$(): Observable<FeatureCollection> {
     return this.center$.pipe(
-      distinctUntilChanged(),
-      switchMap((coords) => this.hazardsService.getCriticalFacilities(coords)),
+      tap((c) => console.log({ c })),
+      distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+      debounceTime(300),
+      tap((d) => console.log({ d })),
+      switchMap((coords) => {
+        console.log('switchMap getCriticalFacilities', coords);
+        return this.hazardsService.getCriticalFacilities(coords);
+      }),
       shareReplay(1)
     );
   }
@@ -130,6 +131,7 @@ export class KyhService {
     const landslideRiskLevel = await this.hazardsService
       .assess(payloadLandslide)
       .toPromise();
+
     this.kyhStore.patch(
       {
         isLoading: false,
@@ -143,6 +145,7 @@ export class KyhService {
 
   init() {
     this.assessRisk();
+    this.criticalFacilities$ = this.getCriticalFacilities$();
   }
 
   isHazardShown$(hazardType: HazardType): Observable<boolean> {
