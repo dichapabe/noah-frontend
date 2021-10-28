@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { HazardType } from '@features/know-your-hazards/store/kyh.store';
 
 @Component({
@@ -9,9 +10,11 @@ import { HazardType } from '@features/know-your-hazards/store/kyh.store';
 export class HazardButtonComponent implements OnInit {
   @Input() hazardType: HazardType;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
-  buttonAction() {}
+  buttonAction() {
+    this.router.navigateByUrl(`/know-your-hazards/${this.hazardType}`);
+  }
 }
