@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { KyhService } from '@features/know-your-hazards/services/kyh.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'noah-base',
@@ -6,7 +8,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./base.component.scss'],
 })
 export class BaseComponent implements OnInit {
-  constructor() {}
+  currentLocation$: Observable<string>;
+
+  constructor(private kyhService: KyhService) {}
 
   ngOnInit(): void {}
+
+  selectPlace(selectedPlace) {
+    this.kyhService.setCurrentLocation(selectedPlace.text);
+    const [lng, lat] = selectedPlace.center;
+    this.kyhService.setCenter({ lat, lng });
+    this.kyhService.setCurrentCoords({ lat, lng });
+  }
 }

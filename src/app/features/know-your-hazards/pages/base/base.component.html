@@ -1,1 +1,6 @@
-<p>base works!</p>
+<noah-search
+  [searchTerm]="currentLocation$ | async"
+  (selectPlace)="selectPlace($event)"
+  class="w-full mt-4 block relative"
+>
+</noah-search>
