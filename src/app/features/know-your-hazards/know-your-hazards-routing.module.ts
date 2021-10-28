@@ -16,7 +16,7 @@ const routes: Routes = [
         component: FloodComponent,
       },
       {
-        path: 'landslides',
+        path: 'landslide',
         component: LandslidesComponent,
       },
       {

@@ -63,6 +63,7 @@ module.exports = {
       },
       width: {
         120: '26.5625rem',
+        136: '37.5rem',
       },
     },
     listStyleType: {

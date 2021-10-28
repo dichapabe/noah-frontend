@@ -11,12 +11,25 @@
     items-center
     justify-between
   "
+  (click)="buttonAction()"
 >
   <div class="flex items-center">
-    <img class="h-auto w-14" src="assets/images/flood.svg" alt="flood" />
+    <img
+      class="h-auto w-14"
+      src="assets/images/{{ hazardType }}.svg"
+      alt="flood"
+    />
     <div class="flex flex-col text-left ml-3">
-      <div class="font-bold leading-none">Flood Hazard Level</div>
-      <div class="uppercase font-bold text-xl leading-none mt-2">MEOW</div>
+      <div class="font-bold leading-none">
+        <span>{{ hazardType | replace: '-':' ' | titlecase }}</span> Hazard
+        Level
+      </div>
+      <div class="uppercase font-bold text-xl leading-none mt-2">
+        <!-- <span [ngClass]="'text-noah-red-' + (landslideRiskLevel$ | async)">RAWR</span> -->
+        <span class="text-noah-red-high">RAWR</span>
+        <span class="text-noah-red-high">Loading...</span>
+      </div>
+      <small>Caption here</small>
     </div>
   </div>
   <img class="w-4" src="assets/icons/right-chevron.svg" />
