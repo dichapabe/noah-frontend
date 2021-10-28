@@ -19,6 +19,7 @@ import { BaseComponent } from './pages/base/base.component';
 import { FloodComponent } from './pages/flood/flood.component';
 import { LandslidesComponent } from './pages/landslides/landslides.component';
 import { StormSurgeComponent } from './pages/storm-surge/storm-surge.component';
+import { HazardButtonComponent } from './components/hazard-button/hazard-button.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { StormSurgeComponent } from './pages/storm-surge/storm-surge.component';
     FloodComponent,
     LandslidesComponent,
     StormSurgeComponent,
+    HazardButtonComponent,
   ],
   imports: [CommonModule, KnowYourHazardsRoutingModule, SharedModule],
 })
