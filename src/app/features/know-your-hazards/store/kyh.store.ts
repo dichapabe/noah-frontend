@@ -9,8 +9,6 @@ export const PH_DEFAULT_CENTER = {
   lng: 120.9943811923392,
 };
 
-export type KYHPage = 'know-your-hazards' | 'critical-facilities' | HazardType;
-
 export type HazardType = 'flood' | 'landslide' | 'storm-surge';
 
 // Remove later -- replace with exposure level
@@ -35,7 +33,6 @@ type KYHState = {
   isLoading: boolean;
   center: { lng: number; lat: number };
   currentCoords: { lng: number; lat: number };
-  currentPage: KYHPage;
   floodRiskLevel: RiskLevel;
   stormSurgeRiskLevel: RiskLevel;
   landslideRiskLevel: RiskLevel;
@@ -51,7 +48,6 @@ const createInitialValue = (): KYHState => {
     isLoading: false,
     center: PH_DEFAULT_CENTER,
     currentCoords: PH_DEFAULT_CENTER,
-    currentPage: 'know-your-hazards',
     floodRiskLevel: 'unavailable',
     stormSurgeRiskLevel: 'unavailable',
     landslideRiskLevel: 'unavailable',

@@ -3,17 +3,14 @@ import { FeatureCollection } from 'geojson';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { Observable, Subject } from 'rxjs';
 import {
-  debounceTime,
   distinctUntilChanged,
   map,
   shareReplay,
   switchMap,
-  tap,
 } from 'rxjs/operators';
 import {
   HazardType,
   KyhStore,
-  KYHPage,
   RiskLevel,
   ExposureLevel,
 } from '../store/kyh.store';
@@ -82,14 +79,6 @@ export class KyhService {
 
   get currentLocation$(): Observable<string> {
     return this.kyhStore.state$.pipe(map((state) => state.currentLocation));
-  }
-
-  get currentPage(): KYHPage {
-    return this.kyhStore.state.currentPage;
-  }
-
-  get currentPage$(): Observable<KYHPage> {
-    return this.kyhStore.state$.pipe(map((state) => state.currentPage));
   }
 
   get isLoading$(): Observable<boolean> {
@@ -185,26 +174,6 @@ export class KyhService {
   setCurrentLocation(currentLocation: string): void {
     this.kyhStore.patch({ currentLocation }, 'update current location');
     this.gaService.event('change_location', 'know_your_hazards');
-  }
-
-  setCurrentPage(currentPage: KYHPage): void {
-    this.kyhStore.patch({ currentPage }, 'update current page');
-
-    const newHazardState: Record<HazardType, { shown: boolean }> = {
-      flood: {
-        shown: currentPage === 'flood' || currentPage === 'know-your-hazards',
-      },
-      landslide: {
-        shown:
-          currentPage === 'landslide' || currentPage === 'know-your-hazards',
-      },
-      'storm-surge': {
-        shown:
-          currentPage === 'storm-surge' || currentPage === 'know-your-hazards',
-      },
-    };
-
-    this.kyhStore.patch({ ...newHazardState }, 'show/hide hazards');
   }
 
   // Temporary

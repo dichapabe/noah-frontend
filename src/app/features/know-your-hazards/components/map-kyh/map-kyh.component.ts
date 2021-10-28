@@ -10,10 +10,7 @@ import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
 import PH_COMBO_LAYERS from '@shared/data/kyh_combined_tileset.json';
 
-import {
-  KYHPage,
-  HazardType,
-} from '@features/know-your-hazards/store/kyh.store';
+import { HazardType } from '@features/know-your-hazards/store/kyh.store';
 import { getHazardColor } from '@shared/mocks/flood';
 import { HazardLevel } from '@features/noah-playground/store/noah-playground.store';
 import { NOAH_COLORS } from '@shared/mocks/noah-colors';
