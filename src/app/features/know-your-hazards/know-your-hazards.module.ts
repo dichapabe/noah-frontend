@@ -9,10 +9,7 @@ import { KnowYourHazardsComponent } from './pages/know-your-hazards/know-your-ha
 
 // COMPONENTS
 import { CriticalFacilitiesKyhComponent } from './components/critical-facilities-kyh/critical-facilities-kyh.component';
-import { FloodKyhComponent } from './components/flood-kyh/flood-kyh.component';
-import { LandslideKyhComponent } from './components/landslide-kyh/landslide-kyh.component';
 import { MapKyhComponent } from './components/map-kyh/map-kyh.component';
-import { StormSurgeKyhComponent } from './components/storm-surge-kyh/storm-surge-kyh.component';
 import { SharedModule } from '@shared/shared.module';
 import { SurvivalKitComponent } from './components/survival-kit/survival-kit.component';
 import { BaseComponent } from './pages/base/base.component';
@@ -25,10 +22,7 @@ import { HazardButtonComponent } from './components/hazard-button/hazard-button.
   declarations: [
     KnowYourHazardsComponent,
     CriticalFacilitiesKyhComponent,
-    FloodKyhComponent,
-    LandslideKyhComponent,
     MapKyhComponent,
-    StormSurgeKyhComponent,
     SurvivalKitComponent,
     BaseComponent,
     FloodComponent,
