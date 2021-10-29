@@ -12,7 +12,9 @@ export class BaseComponent implements OnInit {
 
   constructor(private kyhService: KyhService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.currentLocation$ = this.kyhService.currentLocation$;
+  }
 
   selectPlace(selectedPlace) {
     this.kyhService.setCurrentLocation(selectedPlace.text);
