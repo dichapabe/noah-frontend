@@ -20,6 +20,8 @@ export type ExposureLevel =
   | 'medium'
   | 'high';
 
+export type MapStyle = 'terrain' | 'satellite';
+
 type KYHState = {
   isLoading: boolean;
   center: { lng: number; lat: number };
