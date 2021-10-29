@@ -1,28 +1,25 @@
 <noah-search
   [searchTerm]="currentLocation$ | async"
   (selectPlace)="selectPlace($event)"
-  class="w-full mt-4 block relative"
+  class="w-full mt-4 px-4 block relative"
 >
 </noah-search>
 
 <!-- KYH -->
-<section>
+<section class="px-4">
   <header class="text-xl font-bold leading-tight mt-6 pb-2">
     Hazard Levels In Your Area
   </header>
 
   <!-- BUTTON -->
-  <noah-hazard-button class="py-2" hazardType="flood"></noah-hazard-button>
-  <noah-hazard-button class="py-2" hazardType="landslide"></noah-hazard-button>
-  <noah-hazard-button
-    class="py-2"
-    hazardType="storm-surge"
-  ></noah-hazard-button>
+  <noah-hazard-button hazardType="flood"></noah-hazard-button>
+  <noah-hazard-button hazardType="landslide"></noah-hazard-button>
+  <noah-hazard-button hazardType="storm-surge"></noah-hazard-button>
 </section>
 
 <!-- NOTES -->
 
-<section class="m-6">
+<section class="px-4 py-2">
   <p class="font-bold">Hazards shown are:</p>
   <ol>
     <li>1) 100-year rain return for floods;</li>
@@ -49,6 +46,6 @@
 </section>
 
 <!-- CRITICAL FACILITIES -->
-<section>
+<section class="px-4">
   <noah-critical-facilities-kyh></noah-critical-facilities-kyh>
 </section>
