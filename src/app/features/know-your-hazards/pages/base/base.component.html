@@ -1,12 +1,44 @@
+<div class="px-8 md:px-12 py-2 flex items-center bg-white shadow">
+  <a
+    class="
+      toggleColour
+      no-underline
+      hover:no-underline
+      font-bold
+      text-2xl
+      lg:text-4xl
+    "
+    routerLink="/"
+  >
+    <div class="flex max-w-xs items-center">
+      <img src="assets/icons/logo-noah.svg" class="z-50 w-20" />
+      <div
+        class="
+          text-xs
+          font-bold
+          uppercase
+          tracking-wider
+          p-2
+          z-50
+          hidden
+          lg:block
+        "
+      >
+        Nationwide Operational Assessment of Hazards
+      </div>
+    </div>
+  </a>
+</div>
+
 <noah-search
   [searchTerm]="currentLocation$ | async"
   (selectPlace)="selectPlace($event)"
-  class="w-full mt-4 px-2 md:px-4 block relative"
+  class="px-8 md:px-12 w-full mt-4 block relative"
 >
 </noah-search>
 
 <!-- KYH -->
-<section class="px-2 md:px-4">
+<section class="px-8 md:px-12">
   <header class="text-xl font-bold leading-tight mt-6 pb-2">
     Hazard Levels In Your Area
   </header>
@@ -18,7 +50,7 @@
 </section>
 
 <!-- NOTES -->
-<section class="px-2 md:px-4 py-2">
+<section class="px-8 md:px-12 py-2">
   <p class="font-bold">Hazards shown are:</p>
   <ol>
     <li>1) 100-year rain return for floods;</li>
@@ -45,6 +77,6 @@
 </section>
 
 <!-- CRITICAL FACILITIES -->
-<section class="px-2 md:px-4">
+<section class="px-8 md:px-12">
   <noah-critical-facilities-kyh></noah-critical-facilities-kyh>
 </section>
