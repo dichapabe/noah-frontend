@@ -28,8 +28,7 @@ export class MapKyhComponent implements OnInit {
   geolocateControl!: GeolocateControl;
   centerMarker!: Marker;
   mapStyle: MapStyle = 'terrain';
-  isMapboxAttrib;
-  isOpenedList;
+
   private _unsub = new Subject();
   private _changeStyle = new Subject();
 
@@ -47,6 +46,7 @@ export class MapKyhComponent implements OnInit {
       .subscribe(() => {
         this.initGeocoder();
         this.initGeolocation();
+        this.initAttribution();
         this.initCenterListener();
         this.initGeolocationListener();
       });
@@ -62,6 +62,11 @@ export class MapKyhComponent implements OnInit {
   ngOnDestroy(): void {
     this._unsub.next();
     this._unsub.complete();
+  }
+
+  initAttribution() {
+    const attribution = this.mapService.getNewAttributionControl();
+    this.map.addControl(attribution, 'bottom-right');
   }
 
   initCenterListener() {
