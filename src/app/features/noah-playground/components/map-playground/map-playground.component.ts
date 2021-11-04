@@ -1,6 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MapService } from '@core/services/map.service';
-import mapboxgl, { GeolocateControl, Map, Marker } from 'mapbox-gl';
+import mapboxgl, {
+  AnySourceData,
+  GeolocateControl,
+  Map,
+  Marker,
+} from 'mapbox-gl';
 import { environment } from '@env/environment';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { combineLatest, fromEvent, Subject } from 'rxjs';
@@ -534,29 +539,53 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
 
   initWeatherLayer() {
     const weatherSatelliteImages = {
-      himawari:
-        'https://upri-noah.s3.ap-southeast-1.amazonaws.com/sat_webm/ph_himawari.webm',
-      'himawari-gsmap':
-        'https://upri-noah.s3.ap-southeast-1.amazonaws.com/sat_webm/ph_hima_gsmap.webm',
+      himawari: {
+        url: 'https://upri-noah.s3.ap-southeast-1.amazonaws.com/sat_webm/ph_himawari.webm',
+        type: 'video',
+      },
+      'himawari-GSMAP': {
+        url: 'https://upri-noah.s3.ap-southeast-1.amazonaws.com/sat_webm/ph_hima_gsmap.webm',
+        type: 'video',
+      },
+    };
+
+    const getWeatherSatelliteSource = (weatherSatelliteDetails: {
+      url: string;
+      type: string;
+    }): AnySourceData => {
+      switch (weatherSatelliteDetails.type) {
+        case 'video':
+          return {
+            type: 'video',
+            urls: [weatherSatelliteDetails.url],
+            coordinates: [
+              [100.0, 29.25], // top-left
+              [160.0, 29.25], // top-right
+              [160.0, 5.0], // bottom-right
+              [100.0, 5.0], // bottom-left
+            ],
+          };
+        default:
+          throw new Error(
+            '[MapPlayground] Unable to get weather satellite source'
+          );
+      }
     };
 
     Object.keys(weatherSatelliteImages).forEach((weatherType) => {
-      this.map.addSource(weatherType, {
-        type: 'video',
-        urls: weatherSatelliteImages[weatherType],
-        coordinates: [
-          [100.0, 29.25], // top-left
-          [160.0, 29.25], // top-right
-          [160.0, 5.0], // bottom-right
-          [100.0, 5.0], // bottom-left
-        ],
-      });
+      const weatherSatelliteDetails = weatherSatelliteImages[weatherType];
+
+      this.map.addSource(
+        weatherType,
+        getWeatherSatelliteSource(weatherSatelliteDetails)
+      );
 
       this.map.addLayer({
         id: weatherType,
         type: 'raster',
         source: weatherType,
         paint: {
+          'raster-fade-duration': 0,
           'raster-opacity': 0,
         },
       });
