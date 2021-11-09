@@ -595,7 +595,6 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
         this.pgService.selectedWeatherSatellite$.pipe(distinctUntilChanged()),
       ])
         .pipe(
-          pluck('opacity'),
           takeUntil(this._unsub),
           takeUntil(this._changeStyle),
           map(([groupShown, selectedWeatherSatellite]) => {
