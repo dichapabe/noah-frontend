@@ -18,6 +18,8 @@ export class WeatherComponent implements OnInit {
   selectedWeatherSatellite$: Observable<WeatherSatelliteType>;
   shown$: Observable<boolean>;
 
+  initialOpacityValue: number = 80;
+
   // get opacity(): number {
   //   return this.weatherSatellite.opacity;
   // }

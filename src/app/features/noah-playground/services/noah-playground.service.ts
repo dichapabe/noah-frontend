@@ -275,6 +275,18 @@ export class NoahPlaygroundService {
     );
   }
 
+  setWeatherSatelliteOpacity(value: number, type: WeatherSatelliteType) {
+    const weatherSatellite: WeatherSatelliteState = {
+      ...this.store.state.weatherSatellite,
+    };
+
+    weatherSatellite.types[type].opacity = value;
+    this.store.patch(
+      { weatherSatellite },
+      `Weather Satellite - update ${type}'s opacity to ${value}`
+    );
+  }
+
   setCriticalFacilityShown(value: boolean, type: CriticalFacility) {
     const criticalFacilities: CriticalFacilitiesState = {
       ...this.store.state.criticalFacilities,
