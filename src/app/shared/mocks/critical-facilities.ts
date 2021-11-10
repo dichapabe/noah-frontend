@@ -1,5 +1,7 @@
 import { CircleLayer, LngLatLike, SymbolLayer, VectorSource } from 'mapbox-gl';
 
+export type MapStyle = 'terrain' | 'satellite';
+
 export const CRITICAL_FACILITIES_ARR = [
   'police-station',
   'fire-station',
@@ -16,13 +18,21 @@ export type SampleMarker = {
   address: string;
 };
 
-export const getSymbolLayer = (sourceName: string): SymbolLayer => ({
+export const getSymbolLayer = (
+  sourceName: string,
+  mapStyle: MapStyle
+): SymbolLayer => ({
   id: `${sourceName}-image`,
   type: 'symbol',
   source: sourceName,
   paint: {
     'icon-opacity': 1,
     'text-opacity': 1,
+    'text-color': mapStyle === 'terrain' ? '#000000' : '#ffffff',
+    'text-halo-color':
+      mapStyle === 'terrain' ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)',
+    'text-halo-width': 1,
+    'text-halo-blur': 1,
   },
   filter: ['!', ['has', 'point_count']],
   layout: {
@@ -32,7 +42,8 @@ export const getSymbolLayer = (sourceName: string): SymbolLayer => ({
     'text-anchor': 'top',
     'text-field': ['get', 'name'],
     'text-offset': [0, 2],
-    'text-size': 10,
+    'text-size': 12,
+    'text-letter-spacing': 0.08,
   },
 });
 
