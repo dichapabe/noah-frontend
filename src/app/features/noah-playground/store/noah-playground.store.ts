@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from '@core/services/store-service.service';
-import { CriticalFacility } from '@shared/mocks/critical-facilities';
 import { NoahColor } from '@shared/mocks/noah-colors';
 import { SensorType } from '../services/sensor.service';
 
@@ -196,7 +195,7 @@ const createInitialValue = (): NoahPlaygroundState => ({
     },
   },
   criticalFacilities: {
-    shown: true,
+    shown: false,
     expanded: false,
     types: {
       'fire-station': {
