@@ -48,8 +48,11 @@ import {
   HazardType,
   LandslideHazards,
   PH_DEFAULT_CENTER,
+  WeatherSatelliteType,
+  WeatherSatelliteTypeState,
 } from '@features/noah-playground/store/noah-playground.store';
 import { NOAH_COLORS } from '@shared/mocks/noah-colors';
+
 type MapStyle = 'terrain' | 'satellite';
 
 type LayerSettingsParam = {
@@ -590,20 +593,43 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
         },
       });
 
-      combineLatest([
-        this.pgService.weatherSatelliteGroupShown$.pipe(distinctUntilChanged()),
-        this.pgService.selectedWeatherSatellite$.pipe(distinctUntilChanged()),
-      ])
+      const allShown$ = this.pgService.weatherSatelliteGroupShown$.pipe(
+        distinctUntilChanged()
+      );
+      const weather$ = this.pgService.selectedWeatherSatellite$.pipe(
+        distinctUntilChanged()
+      );
+
+      combineLatest([allShown$, weather$])
         .pipe(
           takeUntil(this._unsub),
           takeUntil(this._changeStyle),
-          map(([groupShown, selectedWeatherSatellite]) => {
-            return +(groupShown && selectedWeatherSatellite === weatherType);
+          // distinctUntilChanged((x, y) => x.opacity !== y.opacity),
+          map(([allShown, weather]) => {
+            return +(allShown && weather === weatherType);
           })
         )
         .subscribe((opacity: number) => {
           this.map.setPaintProperty(weatherType, 'raster-opacity', opacity);
+          this.map.flyTo({
+            center: PH_DEFAULT_CENTER,
+            zoom: 4,
+            essential: true,
+          });
         });
+      //   .subscribe(([allShown, weather]) => {
+      //     let newOpacity = 0;
+
+      //     if (weather.shown && allShown) {
+      //       newOpacity = weather.opacity / 100;
+      //     }
+      //     this.map.flyTo({
+      //       center: PH_DEFAULT_CENTER,
+      //       zoom: 4,
+      //       essential: true,
+      //     });
+      //   this.map.setPaintProperty(weatherType, 'raster-opacity', newOpacity);
+      // });
     });
   }
 

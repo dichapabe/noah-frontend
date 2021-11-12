@@ -13,6 +13,7 @@ import {
   ContourMapType,
   WeatherSatelliteState,
   WeatherSatelliteType,
+  WeatherSatelliteTypeState,
 } from '../store/noah-playground.store';
 import { NoahColor } from '@shared/mocks/noah-colors';
 import { Observable, pipe } from 'rxjs';
@@ -158,9 +159,9 @@ export class NoahPlaygroundService {
     return this.store.state[hazardType].levels[hazardLevel].shown;
   }
 
-  getWeatherSatellites(): WeatherSatelliteState {
-    return this.store.state.weatherSatellite;
-  }
+  // getWeatherSatellites(): WeatherSatelliteState {
+  //   return this.store.state.weatherSatellite;
+  // }
 
   setHazardLevelOpacity(
     opacity: number,
@@ -275,15 +276,19 @@ export class NoahPlaygroundService {
     );
   }
 
-  setWeatherSatelliteOpacity(value: number, type: WeatherSatelliteType) {
+  getWeatherSatelliteOpacity(type: WeatherSatelliteType): number {
+    return this.store.state[type].opacity;
+  }
+
+  setWeatherSatelliteOpacity(value: number) {
     const weatherSatellite: WeatherSatelliteState = {
       ...this.store.state.weatherSatellite,
     };
 
-    weatherSatellite.types[type].opacity = value;
+    weatherSatellite.types[weatherSatellite.selectedType].opacity = value;
     this.store.patch(
       { weatherSatellite },
-      `Weather Satellite - update ${type}'s opacity to ${value}`
+      `Weather Satellite - update ${weatherSatellite.selectedType}'s opacity to ${value}`
     );
   }
 

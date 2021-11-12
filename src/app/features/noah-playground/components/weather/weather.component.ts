@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NoahPlaygroundService } from '@features/noah-playground/services/noah-playground.service';
 import {
   WeatherSatelliteType,
@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./weather.component.scss'],
 })
 export class WeatherComponent implements OnInit {
+  @Input() type: WeatherSatelliteType;
   weatherSatellite: WeatherSatelliteType[] = ['himawari', 'himawari-GSMAP'];
 
   expanded$: Observable<boolean>;
@@ -32,6 +33,9 @@ export class WeatherComponent implements OnInit {
     this.expanded$ = this.pgService.weatherSatelliteGroupExpanded$;
     this.selectedWeatherSatellite$ = this.pgService.selectedWeatherSatellite$;
     this.shown$ = this.pgService.weatherSatelliteGroupShown$;
+    this.initialOpacityValue = this.pgService.getWeatherSatelliteOpacity(
+      this.type
+    );
   }
 
   // changeExaggerationLevel(opacity: number) {
@@ -42,6 +46,10 @@ export class WeatherComponent implements OnInit {
 
   //   this.pgService.setWeatherSatellite(this.weatherSatellite);
   // }
+
+  changeOpacity(opacity: number) {
+    this.pgService.setWeatherSatelliteOpacity(opacity);
+  }
 
   toggleExpanded() {
     this.pgService.toggleWeatherSatelliteGroupExpansion();
