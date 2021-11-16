@@ -15,11 +15,13 @@ export class WeatherComponent implements OnInit {
   @Input() type: WeatherSatelliteType;
   weatherSatellite: WeatherSatelliteType[] = ['himawari', 'himawari-GSMAP'];
 
-  expanded$: Observable<boolean>;
   selectedWeatherSatellite$: Observable<WeatherSatelliteType>;
+  expanded$: Observable<boolean>;
   shown$: Observable<boolean>;
+  expanded = false;
+  shown = false;
 
-  initialOpacityValue: number = 80;
+  initialOpacityValue: number = 30;
 
   // get opacity(): number {
   //   return this.weatherSatellite.opacity;
@@ -33,9 +35,11 @@ export class WeatherComponent implements OnInit {
     this.expanded$ = this.pgService.weatherSatelliteGroupExpanded$;
     this.selectedWeatherSatellite$ = this.pgService.selectedWeatherSatellite$;
     this.shown$ = this.pgService.weatherSatelliteGroupShown$;
-    this.initialOpacityValue = this.pgService.getWeatherSatelliteOpacity(
-      this.type
-    );
+    const { shown, opacity } = this.pgService.getWeatherSatellite(this.type);
+    this.initialOpacityValue = opacity;
+    // const { expanded, shown } = this.pgService.getWeatherSatellites();
+    // this.expanded = expanded;
+    this.shown = shown;
   }
 
   // changeExaggerationLevel(opacity: number) {
@@ -55,14 +59,32 @@ export class WeatherComponent implements OnInit {
     this.pgService.toggleWeatherSatelliteGroupExpansion();
   }
 
+  // toggleShown(event: Event) {
+  //   event.stopPropagation();
+  //   event.stopImmediatePropagation();
+
+  //   this.pgService.toggleWeatherSatellitepGroupVisibility();
+  // }
+
   toggleShown(event: Event) {
     event.stopPropagation();
     event.stopImmediatePropagation();
 
-    this.pgService.toggleWeatherSatellitepGroupVisibility();
+    this.shown = !this.shown;
+    this.pgService.setWeatherSatelliteProperty(this.shown, 'shown');
   }
 
-  selectWeatherSatellite(weatherSatelliteType: WeatherSatelliteType) {
-    this.pgService.selectWeatherSatelliteType(weatherSatelliteType);
+  // toggleExpanded() {
+  //   this.expanded = !this.expanded;
+  //   this.pgService.setWeatherSatelliteProperty(this.expanded, 'expanded');
+  // }
+
+  // toggleShown() {
+  //   this.shown = !this.shown;
+  //   this.pgService.setWeatherSatelliteShown(this.shown, this.type)
+  // }
+
+  selectWeatherSatellite(type: WeatherSatelliteType) {
+    this.pgService.selectWeatherSatelliteType(type);
   }
 }

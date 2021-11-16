@@ -93,12 +93,17 @@ export type WeatherSatelliteState = {
   shown: boolean;
   expanded: boolean;
   selectedType: WeatherSatelliteType;
-  types: Record<WeatherSatelliteType, WeatherSatelliteTypeState>;
+  types: WeatherSatelliteTypesState;
 };
 
 export type WeatherSatelliteTypeState = {
   opacity: number;
   shown: boolean;
+};
+
+export type WeatherSatelliteTypesState = {
+  himawari: WeatherSatelliteTypeState;
+  'himawari-GSMAP': WeatherSatelliteTypeState;
 };
 
 export type SensorsState = {
@@ -232,11 +237,11 @@ const createInitialValue = (): NoahPlaygroundState => ({
     types: {
       himawari: {
         shown: true,
-        opacity: 80,
+        opacity: 30,
       },
       'himawari-GSMAP': {
         shown: false,
-        opacity: 80,
+        opacity: 30,
       },
     },
   },

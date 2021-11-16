@@ -159,10 +159,6 @@ export class NoahPlaygroundService {
     return this.store.state[hazardType].levels[hazardLevel].shown;
   }
 
-  // getWeatherSatellites(): WeatherSatelliteState {
-  //   return this.store.state.weatherSatellite;
-  // }
-
   setHazardLevelOpacity(
     opacity: number,
     hazardType: HazardType,
@@ -181,14 +177,6 @@ export class NoahPlaygroundService {
   getSensorTypeShown$(sensorType: SensorType): Observable<boolean> {
     return this.store.state$.pipe(
       map((state) => state.sensors.types[sensorType].shown)
-    );
-  }
-
-  getWeatherSatelliteTypeShown$(
-    weatherSatelliteType: WeatherSatelliteType
-  ): Observable<boolean> {
-    return this.store.state$.pipe(
-      map((state) => state.weatherSatellite.types[weatherSatelliteType].shown)
     );
   }
 
@@ -276,22 +264,6 @@ export class NoahPlaygroundService {
     );
   }
 
-  getWeatherSatelliteOpacity(type: WeatherSatelliteType): number {
-    return this.store.state[type].opacity;
-  }
-
-  setWeatherSatelliteOpacity(value: number) {
-    const weatherSatellite: WeatherSatelliteState = {
-      ...this.store.state.weatherSatellite,
-    };
-
-    weatherSatellite.types[weatherSatellite.selectedType].opacity = value;
-    this.store.patch(
-      { weatherSatellite },
-      `Weather Satellite - update ${weatherSatellite.selectedType}'s opacity to ${value}`
-    );
-  }
-
   setCriticalFacilityShown(value: boolean, type: CriticalFacility) {
     const criticalFacilities: CriticalFacilitiesState = {
       ...this.store.state.criticalFacilities,
@@ -354,19 +326,100 @@ export class NoahPlaygroundService {
     );
   }
 
-  setWeatherSatellite(weatherSatellite: WeatherSatelliteState) {
-    this.store.patch({ weatherSatellite }, 'updated weather satellite state');
+  getWeatherSatelliteOpacity(type: WeatherSatelliteType): number {
+    return this.store.state[type].opacity;
   }
 
-  selectWeatherSatelliteType(weatherSatelliteType: WeatherSatelliteType): void {
+  // setWeatherSatellite(weatherSatellite: WeatherSatelliteState) {
+  //   this.store.patch({ weatherSatellite }, 'updated weather satellite state');
+  // }
+
+  getWeatherSatellites(): WeatherSatelliteState {
+    return this.store.state.weatherSatellite;
+  }
+
+  getWeatherSatellite(type: WeatherSatelliteType): WeatherSatelliteTypeState {
+    return this.store.state.weatherSatellite.types[type];
+  }
+
+  getWeatherSatellite$(
+    type: WeatherSatelliteType
+  ): Observable<WeatherSatelliteTypeState> {
+    return this.store.state$.pipe(
+      map((state) => state.weatherSatellite.types[type])
+    );
+  }
+
+  setWeatherSatelliteOpacity(opacity: number) {
+    const weatherSatellite: WeatherSatelliteState = {
+      ...this.store.state.weatherSatellite,
+    };
+
+    weatherSatellite.types[weatherSatellite.selectedType].opacity = opacity;
+    this.store.patch(
+      { weatherSatellite },
+      `Weather Satellite - update ${weatherSatellite.selectedType}'s opacity to ${opacity}`
+    );
+  }
+
+  setWeatherSatelliteProperty(value: boolean, property: 'expanded' | 'shown') {
+    const weatherSatellite: WeatherSatelliteState = {
+      ...this.store.state.weatherSatellite,
+    };
+
+    weatherSatellite[property] = value;
+    this.store.patch(
+      { weatherSatellite },
+      `Weather Satellite ${property}, ${value}`
+    );
+  }
+
+  // setWeatherSatelliteOpacity(opacity: number, type: WeatherSatelliteType) {
+  //   const weatherSatellite: WeatherSatelliteState = {
+  //     ...this.store.state.weatherSatellite,
+  //   };
+
+  //   weatherSatellite.types[type].opacity = opacity;
+  //   this.store.patch(
+  //     { [type]: weatherSatellite },
+  //     `Weather Satellite - update ${type}'s opacity to ${opacity}`
+  //   );
+  // }
+
+  setWeatherSatelliteShown(value: boolean, type: WeatherSatelliteType) {
+    const weatherSatellite: WeatherSatelliteState = {
+      ...this.store.state.weatherSatellite,
+    };
+
+    weatherSatellite.types[type].shown = value;
+    this.store.patch(
+      { weatherSatellite },
+      `Weather Satellite - update ${type}'s shown to ${value}`
+    );
+  }
+
+  // selectWeatherSatelliteType(value: boolean, type: WeatherSatelliteType) {
+  //   const weatherSatellite: WeatherSatelliteState = {
+  //     ...this.store.state.weatherSatellite,
+  //   };
+
+  //   weatherSatellite.types[type].shown = value;
+  //   this.store.patch(
+  //     { weatherSatellite },
+  //     `Select weather satellite type: ${type}'s shown to ${value}`
+  //   );
+  // }
+
+  selectWeatherSatelliteType(type: WeatherSatelliteType): void {
     const weatherSatellite = {
       ...this.store.state.weatherSatellite,
     };
 
-    weatherSatellite.selectedType = weatherSatelliteType;
+    weatherSatellite.selectedType = type;
+    // weatherSatellite.types[type].shown = value;
     this.store.patch(
       { weatherSatellite },
-      `select weather satellite type: ${weatherSatelliteType}`
+      `select weather satellite type: ${type}`
     );
   }
 
