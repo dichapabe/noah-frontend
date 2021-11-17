@@ -32,6 +32,7 @@ export class SensorSoloComponent implements OnInit {
   }
 
   toggleShown() {
+    if (this.fetchFailed) return;
     this.pgService.setSensorTypeShown(this.sensorType);
   }
 }

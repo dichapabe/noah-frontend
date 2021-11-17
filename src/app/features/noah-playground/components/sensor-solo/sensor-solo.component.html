@@ -1,21 +1,22 @@
 <div class="pl-6 relative pb-2">
-  <div class="text-m f-f-r py-2 pl-4">
-    <div class="flex items-center">
-      <label class="inline-flex items-center checkbox {{ sensorType }}">
-        <input
-          [checked]="(shown$ | async) && !fetchFailed"
-          [disabled]="fetchFailed"
-          (click)="toggleShown()"
-          type="checkbox"
-          class="h-5 w-5 text-blue-600"
-        />
-      </label>
-      <div class="ml-3">
-        <div [class.line-through]="fetchFailed" class="text-gray-400">
-          {{ sensorName }}
-        </div>
-      </div>
+  <div class="py-2 pl-4 flex items-center" (click)="toggleShown()">
+    <div class="inline-flex items-center checkbox {{ sensorType }}">
+      <input
+        [checked]="(shown$ | async) && !fetchFailed"
+        [disabled]="fetchFailed"
+        type="checkbox"
+        class="h-5 w-5 text-blue-600"
+        name="input-{{ sensorType }}"
+      />
     </div>
+    <label
+      [class.line-through]="fetchFailed"
+      [class.text-gray-400]="fetchFailed"
+      class="ml-3"
+      for="input-{{ sensorType }}"
+    >
+      {{ sensorName }}
+    </label>
   </div>
 
   <div
