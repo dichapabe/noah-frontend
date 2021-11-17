@@ -416,7 +416,6 @@ export class NoahPlaygroundService {
     };
 
     weatherSatellite.selectedType = type;
-    // weatherSatellite.types[type].shown = value;
     this.store.patch(
       { weatherSatellite },
       `select weather satellite type: ${type}`
