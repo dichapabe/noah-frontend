@@ -48,6 +48,7 @@ import {
   HazardType,
   LandslideHazards,
   PH_DEFAULT_CENTER,
+  WeatherSatelliteState,
   WeatherSatelliteType,
   WeatherSatelliteTypeState,
 } from '@features/noah-playground/store/noah-playground.store';
@@ -604,7 +605,6 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
         .pipe(
           takeUntil(this._unsub),
           takeUntil(this._changeStyle),
-          // distinctUntilChanged((x, y) => x.opacity !== y.opacity),
           map(([allShown, weather]) => {
             return +(allShown && weather === weatherType);
           })
@@ -617,19 +617,7 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
             essential: true,
           });
         });
-      //   .subscribe(([allShown, weather]) => {
-      //     let newOpacity = 0;
-
-      //     if (weather.shown && allShown) {
-      //       newOpacity = weather.opacity / 100;
-      //     }
-      //     this.map.flyTo({
-      //       center: PH_DEFAULT_CENTER,
-      //       zoom: 4,
-      //       essential: true,
-      //     });
-      //   this.map.setPaintProperty(weatherType, 'raster-opacity', newOpacity);
-      // });
+      //  this._loadWeatherSatellite(weatherType);
     });
   }
 
@@ -963,6 +951,46 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
         this.map.setPaintProperty(layerName, 'fill-opacity', newOpacity);
       });
   }
+
+  //
+  private _loadWeatherSatellite(weatherType: WeatherSatelliteType) {
+    // const layerName = this.pgService.getWeatherSatellites;
+
+    // opacity
+    this.pgService
+      .getWeatherSatellite$(weatherType)
+      .pipe(
+        takeUntil(this._unsub),
+        takeUntil(this._changeStyle),
+        distinctUntilChanged((x, y) => x.opacity !== y.opacity)
+      )
+      .subscribe((weatherSatellite) => {
+        const newOpacity = weatherSatellite.opacity / 100;
+        this.map.setPaintProperty(weatherType, 'raster-opacity', newOpacity);
+      });
+
+    // shown
+    const allShown$ = this.pgService.weatherSatelliteGroupShown$.pipe(
+      distinctUntilChanged()
+    );
+
+    const weather$ = this.pgService
+      .getWeatherSatellite$(weatherType)
+      .pipe(distinctUntilChanged((x, y) => x.shown !== y.shown));
+
+    combineLatest([allShown$, weather$])
+      .pipe(takeUntil(this._unsub), takeUntil(this._changeStyle))
+      .subscribe(([allShown, weather]) => {
+        let newOpacity = 0;
+
+        if (weather.shown && allShown) {
+          newOpacity = weather.opacity / 100;
+        }
+
+        this.map.setPaintProperty(weatherType, 'raster-opacity', newOpacity);
+      });
+  }
+  //
 
   private _loadCriticalFacilityIcon(name: CriticalFacility) {
     const _this = this;
