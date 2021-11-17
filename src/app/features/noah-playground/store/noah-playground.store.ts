@@ -229,8 +229,8 @@ const createInitialValue = (): NoahPlaygroundState => ({
   center: null,
   currentLocation: '-----',
   sensors: {
-    shown: true,
-    expanded: true,
+    shown: false,
+    expanded: false,
     types: {
       arg: {
         shown: true,
