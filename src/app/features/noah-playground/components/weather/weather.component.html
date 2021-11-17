@@ -66,31 +66,6 @@
           ></path>
         </svg>
       </button>
-      <!-- <button
-        [class.hidden]="!expanded"
-        class="
-          w-6
-          h-6
-          focus:outline-none
-          flex
-          items-center
-          justify-center
-          rounded-full
-        "
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="12"
-          height="12"
-          viewBox="0 0 18 12"
-          fill="none"
-        >
-          <path
-            d="M9.00002 4.73399L2.40001 11.334L0.514683 9.44865L9.00002 0.963319L17.4854 9.44865L15.6 11.334L9.00002 4.73399Z"
-            fill="#4A5568"
-          ></path>
-        </svg>
-      </button> -->
     </div>
   </div>
   <div [ngClass]="(expanded$ | async) ? ' pt-5 ' : ' hidden '">
@@ -125,14 +100,5 @@
         ></noah-slider>
       </div>
     </div>
-    <!--  -->
-
-    <!-- <noah-slider
-        label="HIMAWARI - Opacity"
-        [initialValue]="opacity"
-        [min]="0"
-        [max]="100"
-        (valueChange)="changeExaggerationLevel($event)"
-      ></noah-slider> -->
   </div>
 </div>
