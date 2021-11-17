@@ -34,7 +34,7 @@ export class WeatherComponent implements OnInit {
     // initializing the value
     this.expanded$ = this.pgService.weatherSatelliteGroupExpanded$;
     this.selectedWeatherSatellite$ = this.pgService.selectedWeatherSatellite$;
-    this.shown$ = this.pgService.weatherSatelliteGroupShown$;
+    this.shown$ = this.pgService.weatherSatellitesShown$;
     const { shown, opacity } = this.pgService.getWeatherSatellite(this.type);
     this.initialOpacityValue = opacity;
     // const { expanded, shown } = this.pgService.getWeatherSatellites();
@@ -51,9 +51,9 @@ export class WeatherComponent implements OnInit {
   //   this.pgService.setWeatherSatellite(this.weatherSatellite);
   // }
 
-  changeOpacity(opacity: number) {
-    this.pgService.setWeatherSatelliteOpacity(opacity);
-  }
+  // changeOpacity(opacity: number) {
+  //   this.pgService.setWeatherSatelliteOpacity(opacity);
+  // }
 
   toggleExpanded() {
     this.pgService.toggleWeatherSatelliteGroupExpansion();

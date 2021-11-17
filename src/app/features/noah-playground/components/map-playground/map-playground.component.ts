@@ -594,7 +594,7 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
         },
       });
 
-      const allShown$ = this.pgService.weatherSatelliteGroupShown$.pipe(
+      const allShown$ = this.pgService.weatherSatellitesShown$.pipe(
         distinctUntilChanged()
       );
       const weather$ = this.pgService.selectedWeatherSatellite$.pipe(
@@ -970,7 +970,7 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
       });
 
     // shown
-    const allShown$ = this.pgService.weatherSatelliteGroupShown$.pipe(
+    const allShown$ = this.pgService.weatherSatellitesShown$.pipe(
       distinctUntilChanged()
     );
 

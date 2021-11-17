@@ -67,7 +67,7 @@ export class NoahPlaygroundService {
     );
   }
 
-  get weatherSatelliteGroupShown$(): Observable<boolean> {
+  get weatherSatellitesShown$(): Observable<boolean> {
     return this.store.state$.pipe(map((state) => state.weatherSatellite.shown));
   }
 
@@ -326,9 +326,9 @@ export class NoahPlaygroundService {
     );
   }
 
-  getWeatherSatelliteOpacity(type: WeatherSatelliteType): number {
-    return this.store.state[type].opacity;
-  }
+  // getWeatherSatelliteOpacity(type: WeatherSatelliteType): number {
+  //   return this.store.state[type].opacity;
+  // }
 
   // setWeatherSatellite(weatherSatellite: WeatherSatelliteState) {
   //   this.store.patch({ weatherSatellite }, 'updated weather satellite state');
@@ -350,18 +350,6 @@ export class NoahPlaygroundService {
     );
   }
 
-  setWeatherSatelliteOpacity(opacity: number) {
-    const weatherSatellite: WeatherSatelliteState = {
-      ...this.store.state.weatherSatellite,
-    };
-
-    weatherSatellite.types[weatherSatellite.selectedType].opacity = opacity;
-    this.store.patch(
-      { weatherSatellite },
-      `Weather Satellite - update ${weatherSatellite.selectedType}'s opacity to ${opacity}`
-    );
-  }
-
   setWeatherSatelliteProperty(value: boolean, property: 'expanded' | 'shown') {
     const weatherSatellite: WeatherSatelliteState = {
       ...this.store.state.weatherSatellite,
@@ -374,17 +362,29 @@ export class NoahPlaygroundService {
     );
   }
 
-  // setWeatherSatelliteOpacity(opacity: number, type: WeatherSatelliteType) {
+  // setWeatherSatelliteOpacity(opacity: number) {
   //   const weatherSatellite: WeatherSatelliteState = {
   //     ...this.store.state.weatherSatellite,
   //   };
 
-  //   weatherSatellite.types[type].opacity = opacity;
+  //   weatherSatellite.types[weatherSatellite.selectedType].opacity = opacity;
   //   this.store.patch(
-  //     { [type]: weatherSatellite },
-  //     `Weather Satellite - update ${type}'s opacity to ${opacity}`
+  //     { weatherSatellite },
+  //     `Weather Satellite - update ${weatherSatellite.selectedType}'s opacity to ${opacity}`
   //   );
   // }
+
+  setWeatherSatelliteOpacity(opacity: number, type: WeatherSatelliteType) {
+    const weatherSatellite: WeatherSatelliteState = {
+      ...this.store.state.weatherSatellite,
+    };
+
+    weatherSatellite.types[type].opacity = opacity;
+    this.store.patch(
+      { weatherSatellite },
+      `Weather Satellite - update ${type}'s opacity to ${opacity}`
+    );
+  }
 
   setWeatherSatelliteShown(value: boolean, type: WeatherSatelliteType) {
     const weatherSatellite: WeatherSatelliteState = {
