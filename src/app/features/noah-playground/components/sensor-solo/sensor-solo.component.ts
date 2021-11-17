@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NoahPlaygroundService } from '@features/noah-playground/services/noah-playground.service';
 import { SensorType } from '@features/noah-playground/services/sensor.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 export const SENSOR_NAMES: Record<SensorType, string> = {
   arg: 'Automated Rain Gauge',
@@ -20,6 +21,8 @@ export class SensorSoloComponent implements OnInit {
   shown$: Observable<boolean>;
   fetchFailed: boolean;
 
+  private _unsub = new Subject();
+
   get sensorName(): string {
     return SENSOR_NAMES[this.sensorType];
   }
@@ -28,7 +31,13 @@ export class SensorSoloComponent implements OnInit {
 
   ngOnInit(): void {
     this.shown$ = this.pgService.getSensorTypeShown$(this.sensorType);
-    this.fetchFailed = true;
+    this.pgService
+      .getSensorTypeFetched$(this.sensorType)
+      .pipe(takeUntil(this._unsub))
+      .subscribe((fetched) => {
+        this.fetchFailed = !fetched;
+        console.log(fetched);
+      });
   }
 
   toggleShown() {

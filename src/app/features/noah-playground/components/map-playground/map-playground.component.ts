@@ -242,6 +242,7 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
               );
             });
 
+          this.pgService.setSensorTypeFetched(sensorType, true);
           // show mouse event listeners
           this.showDataPoints(sensorType);
         })
