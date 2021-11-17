@@ -70,13 +70,12 @@
   <div [ngClass]="(expanded$ | async) ? ' pt-5 ' : ' hidden '">
     <hr class="pb-2" />
 
-    <div class="pl-6 relative pb-2" *ngFor="let sensorType of sensorTypes">
-      <noah-sensor-solo [sensorType]="sensorType"></noah-sensor-solo>
-      <div class="absolute left-0 bottom-0 text-xs italic pl-16 ml-2">
-        Unable to fetch data
-      </div>
-    </div>
-    <div>
+    <noah-sensor-solo
+      *ngFor="let sensorType of sensorTypes"
+      [sensorType]="sensorType"
+    ></noah-sensor-solo>
+
+    <div class="pl-9">
       <p class="text-xs italic mt-2">
         Sensors data are from the stations deployed by DOST-ASTI, together with
         the help of DOST and PAGASA

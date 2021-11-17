@@ -1,15 +1,21 @@
-<div class="text-m f-f-r py-2 pl-4">
-  <div class="flex items-center">
-    <label class="inline-flex items-center checkbox {{ sensorType }}">
-      <input
-        [checked]="shown$ | async"
-        (click)="toggleShown()"
-        type="checkbox"
-        class="h-5 w-5 text-blue-600"
-      />
-    </label>
-    <div class="ml-3">
-      <div class="">{{ sensorName }}</div>
+<div class="pl-6 relative pb-2">
+  <div class="text-m f-f-r py-2 pl-4">
+    <div class="flex items-center">
+      <label class="inline-flex items-center checkbox {{ sensorType }}">
+        <input
+          [checked]="shown$ | async"
+          (click)="toggleShown()"
+          type="checkbox"
+          class="h-5 w-5 text-blue-600"
+        />
+      </label>
+      <div class="ml-3">
+        <div class="">{{ sensorName }}</div>
+      </div>
     </div>
+  </div>
+
+  <div class="absolute left-0 bottom-0 text-xs italic pl-16 ml-2">
+    Unable to fetch data
   </div>
 </div>
