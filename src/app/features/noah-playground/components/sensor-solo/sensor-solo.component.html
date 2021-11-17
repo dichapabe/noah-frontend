@@ -3,19 +3,25 @@
     <div class="flex items-center">
       <label class="inline-flex items-center checkbox {{ sensorType }}">
         <input
-          [checked]="shown$ | async"
+          [checked]="(shown$ | async) && !fetchFailed"
+          [disabled]="fetchFailed"
           (click)="toggleShown()"
           type="checkbox"
           class="h-5 w-5 text-blue-600"
         />
       </label>
       <div class="ml-3">
-        <div class="">{{ sensorName }}</div>
+        <div [class.line-through]="fetchFailed" class="text-gray-400">
+          {{ sensorName }}
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="absolute left-0 bottom-0 text-xs italic pl-16 ml-2">
-    Unable to fetch data
+  <div
+    class="absolute left-0 bottom-0 text-xs italic pl-16 ml-2 text-gray-400"
+    *ngIf="fetchFailed"
+  >
+    (Unable to fetch data)
   </div>
 </div>

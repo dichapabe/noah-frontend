@@ -18,6 +18,7 @@ export class SensorSoloComponent implements OnInit {
   @Input() sensorType: SensorType;
 
   shown$: Observable<boolean>;
+  fetchFailed: boolean;
 
   get sensorName(): string {
     return SENSOR_NAMES[this.sensorType];
@@ -27,6 +28,7 @@ export class SensorSoloComponent implements OnInit {
 
   ngOnInit(): void {
     this.shown$ = this.pgService.getSensorTypeShown$(this.sensorType);
+    this.fetchFailed = true;
   }
 
   toggleShown() {
