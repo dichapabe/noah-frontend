@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NoahPlaygroundService } from '@features/noah-playground/services/noah-playground.service';
 import { SensorType } from '@features/noah-playground/services/sensor.service';
 import { Observable, Subject } from 'rxjs';
@@ -15,7 +15,7 @@ export const SENSOR_NAMES: Record<SensorType, string> = {
   templateUrl: './sensor-solo.component.html',
   styleUrls: ['./sensor-solo.component.scss'],
 })
-export class SensorSoloComponent implements OnInit {
+export class SensorSoloComponent implements OnInit, OnDestroy {
   @Input() sensorType: SensorType;
 
   shown$: Observable<boolean>;
@@ -38,6 +38,11 @@ export class SensorSoloComponent implements OnInit {
         this.fetchFailed = !fetched;
         console.log(fetched);
       });
+  }
+
+  ngOnDestroy(): void {
+    this._unsub.next();
+    this._unsub.complete();
   }
 
   toggleShown() {
