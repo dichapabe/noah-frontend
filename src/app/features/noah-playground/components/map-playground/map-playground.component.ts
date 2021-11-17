@@ -74,6 +74,8 @@ export type RawFloodReturnPeriod = '5yr' | '25yr' | '100yr';
 
 export type RawStormSurgeAdvisory = 'ssa1' | 'ssa2' | 'ssa3' | 'ssa4';
 
+export type RawWeatherSatellite = 'himawari' | 'himawari-GSMAP';
+
 export type RawLandslideHazards =
   | 'lh1' // landslide
   | 'lh2' // alluvial fan and debris flow
@@ -594,29 +596,61 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
         },
       });
 
-      const allShown$ = this.pgService.weatherSatellitesShown$.pipe(
-        distinctUntilChanged()
-      );
-      const weather$ = this.pgService.selectedWeatherSatellite$.pipe(
-        distinctUntilChanged()
-      );
-
-      combineLatest([allShown$, weather$])
+      this.pgService
+        .getWeatherSatellite$('himawari')
         .pipe(
           takeUntil(this._unsub),
           takeUntil(this._changeStyle),
-          map(([allShown, weather]) => {
-            return +(allShown && weather === weatherType);
-          })
+          distinctUntilChanged((x, y) => x.opacity !== y.opacity)
         )
-        .subscribe((opacity: number) => {
-          this.map.setPaintProperty(weatherType, 'raster-opacity', opacity);
+        .subscribe((weather) => {
+          const newOpacity = weather.opacity / 100;
+          this.map.setPaintProperty(weatherType, 'raster-opacity', newOpacity);
+        });
+
+      const allShown$ = this.pgService.weatherSatellitesShown$.pipe(
+        distinctUntilChanged()
+      );
+      const weather$ = this.pgService
+        .getWeatherSatellite$('himawari')
+        .pipe(distinctUntilChanged((x, y) => x.shown !== y.shown));
+      // const weather$ = this.pgService.selectedWeatherSatellite$.pipe(
+      //   distinctUntilChanged()
+      // );
+
+      // combineLatest([allShown$, weather$])
+      //   .pipe(
+      //     takeUntil(this._unsub),
+      //     takeUntil(this._changeStyle),
+      //     map(([allShown, weather]) => {
+      //       return +(allShown && weather === weatherType);
+      //     })
+      //   )
+      //   .subscribe((opacity: number) => {
+      //     this.map.setPaintProperty(weatherType, 'raster-opacity', opacity);
+      //     this.map.flyTo({
+      //       center: PH_DEFAULT_CENTER,
+      //       zoom: 4,
+      //       essential: true,
+      //     });
+      //   });
+      combineLatest([allShown$, weather$])
+        .pipe(takeUntil(this._unsub), takeUntil(this._changeStyle))
+        .subscribe(([allShown, weather]) => {
+          let newOpacity = 0;
+
+          if (weather.shown && allShown) {
+            newOpacity = weather.opacity / 100;
+          }
+
+          this.map.setPaintProperty(weatherType, 'raster-opacity', newOpacity);
           this.map.flyTo({
             center: PH_DEFAULT_CENTER,
             zoom: 4,
             essential: true,
           });
         });
+
       //  this._loadWeatherSatellite(weatherType);
     });
   }

@@ -14,7 +14,7 @@ export class WeatherComponent implements OnInit {
   selectedWeatherSatellite$: Observable<WeatherSatelliteType>;
   shown = false;
 
-  initialOpacityValue: number = 20;
+  initialOpacityValue: number = 80;
 
   get displayName(): string {
     return this.name.replace('-', ' ');

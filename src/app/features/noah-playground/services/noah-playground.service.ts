@@ -61,12 +61,6 @@ export class NoahPlaygroundService {
     return this.store.state$.pipe(map((state) => state.sensors.expanded));
   }
 
-  get weatherSatelliteGroupExpanded$(): Observable<boolean> {
-    return this.store.state$.pipe(
-      map((state) => state.weatherSatellite.expanded)
-    );
-  }
-
   get weatherSatellitesShown$(): Observable<boolean> {
     return this.store.state$.pipe(map((state) => state.weatherSatellite.shown));
   }
@@ -326,14 +320,6 @@ export class NoahPlaygroundService {
     );
   }
 
-  // getWeatherSatelliteOpacity(type: WeatherSatelliteType): number {
-  //   return this.store.state[type].opacity;
-  // }
-
-  // setWeatherSatellite(weatherSatellite: WeatherSatelliteState) {
-  //   this.store.patch({ weatherSatellite }, 'updated weather satellite state');
-  // }
-
   getWeatherSatellites(): WeatherSatelliteState {
     return this.store.state.weatherSatellite;
   }
@@ -362,18 +348,6 @@ export class NoahPlaygroundService {
     );
   }
 
-  // setWeatherSatelliteOpacity(opacity: number) {
-  //   const weatherSatellite: WeatherSatelliteState = {
-  //     ...this.store.state.weatherSatellite,
-  //   };
-
-  //   weatherSatellite.types[weatherSatellite.selectedType].opacity = opacity;
-  //   this.store.patch(
-  //     { weatherSatellite },
-  //     `Weather Satellite - update ${weatherSatellite.selectedType}'s opacity to ${opacity}`
-  //   );
-  // }
-
   setWeatherSatelliteOpacity(opacity: number, type: WeatherSatelliteType) {
     const weatherSatellite: WeatherSatelliteState = {
       ...this.store.state.weatherSatellite,
@@ -398,18 +372,6 @@ export class NoahPlaygroundService {
     );
   }
 
-  // selectWeatherSatelliteType(value: boolean, type: WeatherSatelliteType) {
-  //   const weatherSatellite: WeatherSatelliteState = {
-  //     ...this.store.state.weatherSatellite,
-  //   };
-
-  //   weatherSatellite.types[type].shown = value;
-  //   this.store.patch(
-  //     { weatherSatellite },
-  //     `Select weather satellite type: ${type}'s shown to ${value}`
-  //   );
-  // }
-
   selectWeatherSatelliteType(type: WeatherSatelliteType): void {
     const weatherSatellite = {
       ...this.store.state.weatherSatellite,
@@ -418,26 +380,8 @@ export class NoahPlaygroundService {
     weatherSatellite.selectedType = type;
     this.store.patch(
       { weatherSatellite },
-      `select weather satellite type: ${type}`
+      `Select Weather Satellite type: ${type}`
     );
-  }
-
-  toggleWeatherSatellitepGroupVisibility(): void {
-    const weatherSatellite = {
-      ...this.store.state.weatherSatellite,
-    };
-
-    weatherSatellite.shown = !weatherSatellite.shown;
-    this.store.patch({ weatherSatellite }, `toggle weather visibility`);
-  }
-
-  toggleWeatherSatelliteGroupExpansion(): void {
-    const weatherSatellite = {
-      ...this.store.state.weatherSatellite,
-    };
-
-    weatherSatellite.expanded = !weatherSatellite.expanded;
-    this.store.patch({ weatherSatellite }, `toggle weather expansion`);
   }
 
   selectContourMapType(type: ContourMapType): void {
