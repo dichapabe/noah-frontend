@@ -51,6 +51,7 @@ import {
   WeatherSatelliteState,
   WeatherSatelliteType,
   WeatherSatelliteTypeState,
+  WEATHER_SATELLITE_ARR,
 } from '@features/noah-playground/store/noah-playground.store';
 import { NOAH_COLORS } from '@shared/mocks/noah-colors';
 
@@ -129,7 +130,7 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
         this.addCriticalFacilityLayers();
         this.initHazardLayers();
         this.initSensors();
-        this.initWeatherLayer();
+        this.initWeatherSatelliteLayers();
         this.showContourMaps();
       });
   }
@@ -492,6 +493,10 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
     });
   }
 
+  initWeatherSatelliteLayers() {
+    WEATHER_SATELLITE_ARR.forEach((ws) => this._loadWeatherSatellite(ws));
+  }
+
   // initWeatherLayer() {
   //   const layerID = 'himawari-satellite-image';
 
@@ -543,117 +548,97 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
   //     });
   // }
 
-  initWeatherLayer() {
-    const weatherSatelliteImages = {
-      himawari: {
-        url: 'https://upri-noah.s3.ap-southeast-1.amazonaws.com/sat_webm/ph_himawari.webm',
-        type: 'video',
-      },
-      'himawari-GSMAP': {
-        url: 'https://upri-noah.s3.ap-southeast-1.amazonaws.com/sat_webm/ph_hima_gsmap.webm',
-        type: 'video',
-      },
-    };
+  // initWeatherLayer() {
+  //   const weatherSatelliteImages = {
+  //     himawari: {
+  //       url: 'https://upri-noah.s3.ap-southeast-1.amazonaws.com/sat_webm/ph_himawari.webm',
+  //       type: 'video',
+  //     },
+  //     'himawari-GSMAP': {
+  //       url: 'https://upri-noah.s3.ap-southeast-1.amazonaws.com/sat_webm/ph_hima_gsmap.webm',
+  //       type: 'video',
+  //     },
+  //   };
 
-    const getWeatherSatelliteSource = (weatherSatelliteDetails: {
-      url: string;
-      type: string;
-    }): AnySourceData => {
-      switch (weatherSatelliteDetails.type) {
-        case 'video':
-          return {
-            type: 'video',
-            urls: [weatherSatelliteDetails.url],
-            coordinates: [
-              [100.0, 29.25], // top-left
-              [160.0, 29.25], // top-right
-              [160.0, 5.0], // bottom-right
-              [100.0, 5.0], // bottom-left
-            ],
-          };
-        default:
-          throw new Error(
-            '[MapPlayground] Unable to get weather satellite source'
-          );
-      }
-    };
+  //   const getWeatherSatelliteSource = (weatherSatelliteDetails: {
+  //     url: string;
+  //     type: string;
+  //   }): AnySourceData => {
+  //     switch (weatherSatelliteDetails.type) {
+  //       case 'video':
+  //         return {
+  //           type: 'video',
+  //           urls: [weatherSatelliteDetails.url],
+  //           coordinates: [
+  //             [100.0, 29.25], // top-left
+  //             [160.0, 29.25], // top-right
+  //             [160.0, 5.0], // bottom-right
+  //             [100.0, 5.0], // bottom-left
+  //           ],
+  //         };
+  //       default:
+  //         throw new Error(
+  //           '[MapPlayground] Unable to get weather satellite source'
+  //         );
+  //     }
+  //   };
 
-    Object.keys(weatherSatelliteImages).forEach((weatherType) => {
-      const weatherSatelliteDetails = weatherSatelliteImages[weatherType];
+  //   Object.keys(weatherSatelliteImages).forEach((weatherType) => {
+  //     const weatherSatelliteDetails = weatherSatelliteImages[weatherType];
 
-      this.map.addSource(
-        weatherType,
-        getWeatherSatelliteSource(weatherSatelliteDetails)
-      );
+  //     this.map.addSource(
+  //       weatherType,
+  //       getWeatherSatelliteSource(weatherSatelliteDetails)
+  //     );
 
-      this.map.addLayer({
-        id: weatherType,
-        type: 'raster',
-        source: weatherType,
-        paint: {
-          'raster-fade-duration': 0,
-          'raster-opacity': 0,
-        },
-      });
+  //     this.map.addLayer({
+  //       id: weatherType,
+  //       type: 'raster',
+  //       source: weatherType,
+  //       paint: {
+  //         'raster-fade-duration': 0,
+  //         'raster-opacity': 0,
+  //       },
+  //     });
 
-      this.pgService
-        .getWeatherSatellite$('himawari')
-        .pipe(
-          takeUntil(this._unsub),
-          takeUntil(this._changeStyle),
-          distinctUntilChanged((x, y) => x.opacity !== y.opacity)
-        )
-        .subscribe((weather) => {
-          const newOpacity = weather.opacity / 100;
-          this.map.setPaintProperty(weatherType, 'raster-opacity', newOpacity);
-        });
+  //     this.pgService
+  //       .getWeatherSatellite$('himawari')
+  //       .pipe(
+  //         takeUntil(this._unsub),
+  //         takeUntil(this._changeStyle),
+  //         distinctUntilChanged((x, y) => x.opacity !== y.opacity)
+  //       )
+  //       .subscribe((weather) => {
+  //         const newOpacity = weather.opacity / 100;
+  //         this.map.setPaintProperty(weatherType, 'raster-opacity', newOpacity);
+  //       });
 
-      const allShown$ = this.pgService.weatherSatellitesShown$.pipe(
-        distinctUntilChanged()
-      );
-      const weather$ = this.pgService
-        .getWeatherSatellite$('himawari')
-        .pipe(distinctUntilChanged((x, y) => x.shown !== y.shown));
-      // const weather$ = this.pgService.selectedWeatherSatellite$.pipe(
-      //   distinctUntilChanged()
-      // );
+  //     const allShown$ = this.pgService.weatherSatellitesShown$.pipe(
+  //       distinctUntilChanged()
+  //     );
 
-      // combineLatest([allShown$, weather$])
-      //   .pipe(
-      //     takeUntil(this._unsub),
-      //     takeUntil(this._changeStyle),
-      //     map(([allShown, weather]) => {
-      //       return +(allShown && weather === weatherType);
-      //     })
-      //   )
-      //   .subscribe((opacity: number) => {
-      //     this.map.setPaintProperty(weatherType, 'raster-opacity', opacity);
-      //     this.map.flyTo({
-      //       center: PH_DEFAULT_CENTER,
-      //       zoom: 4,
-      //       essential: true,
-      //     });
-      //   });
-      combineLatest([allShown$, weather$])
-        .pipe(takeUntil(this._unsub), takeUntil(this._changeStyle))
-        .subscribe(([allShown, weather]) => {
-          let newOpacity = 0;
+  //     const weather$ = this.pgService.selectedWeatherSatellite$.pipe(
+  //       distinctUntilChanged()
+  //     );
 
-          if (weather.shown && allShown) {
-            newOpacity = weather.opacity / 100;
-          }
-
-          this.map.setPaintProperty(weatherType, 'raster-opacity', newOpacity);
-          this.map.flyTo({
-            center: PH_DEFAULT_CENTER,
-            zoom: 4,
-            essential: true,
-          });
-        });
-
-      //  this._loadWeatherSatellite(weatherType);
-    });
-  }
+  //     combineLatest([allShown$, weather$])
+  //       .pipe(
+  //         takeUntil(this._unsub),
+  //         takeUntil(this._changeStyle),
+  //         map(([allShown, weather]) => {
+  //           return +(allShown && weather === weatherType);
+  //         })
+  //       )
+  //       .subscribe((opacity: number) => {
+  //         this.map.setPaintProperty(weatherType, 'raster-opacity', opacity);
+  //         this.map.flyTo({
+  //           center: PH_DEFAULT_CENTER,
+  //           zoom: 4,
+  //           essential: true,
+  //         });
+  //       });
+  //   });
+  // }
 
   showContourMaps() {
     const contourMapImages = {
@@ -987,42 +972,128 @@ export class MapPlaygroundComponent implements OnInit, OnDestroy {
   }
 
   //
-  private _loadWeatherSatellite(weatherType: WeatherSatelliteType) {
-    // const layerName = this.pgService.getWeatherSatellites;
+  private _loadWeatherSatellite(name: WeatherSatelliteType) {
+    const weatherSatelliteImages = {
+      himawari: {
+        url: 'https://upri-noah.s3.ap-southeast-1.amazonaws.com/sat_webm/ph_himawari.webm',
+        type: 'video',
+      },
+      'himawari-GSMAP': {
+        url: 'https://upri-noah.s3.ap-southeast-1.amazonaws.com/sat_webm/ph_hima_gsmap.webm',
+        type: 'video',
+      },
+    };
 
-    // opacity
-    this.pgService
-      .getWeatherSatellite$(weatherType)
-      .pipe(
-        takeUntil(this._unsub),
-        takeUntil(this._changeStyle),
-        distinctUntilChanged((x, y) => x.opacity !== y.opacity)
-      )
-      .subscribe((weatherSatellite) => {
-        const newOpacity = weatherSatellite.opacity / 100;
-        this.map.setPaintProperty(weatherType, 'raster-opacity', newOpacity);
+    const getWeatherSatelliteSource = (weatherSatelliteDetails: {
+      url: string;
+      type: string;
+    }): AnySourceData => {
+      switch (weatherSatelliteDetails.type) {
+        case 'video':
+          return {
+            type: 'video',
+            urls: [weatherSatelliteDetails.url],
+            coordinates: [
+              [100.0, 29.25], // top-left
+              [160.0, 29.25], // top-right
+              [160.0, 5.0], // bottom-right
+              [100.0, 5.0], // bottom-left
+            ],
+          };
+        default:
+          throw new Error(
+            '[MapPlayground] Unable to get weather satellite source'
+          );
+      }
+    };
+
+    Object.keys(weatherSatelliteImages).forEach((weatherType) => {
+      const weatherSatelliteDetails = weatherSatelliteImages[weatherType];
+
+      this.map.addSource(
+        weatherType,
+        getWeatherSatelliteSource(weatherSatelliteDetails)
+      );
+
+      this.map.addLayer({
+        id: weatherType,
+        type: 'raster',
+        source: weatherType,
+        paint: {
+          'raster-fade-duration': 0,
+          'raster-opacity': 0,
+        },
       });
 
-    // shown
-    const allShown$ = this.pgService.weatherSatellitesShown$.pipe(
-      distinctUntilChanged()
-    );
+      const allShown$ = this.pgService.weatherSatellitesShown$.pipe(
+        distinctUntilChanged()
+      );
+      const selectedWeather$ = this.pgService.selectedWeatherSatellite$.pipe(
+        distinctUntilChanged()
+      );
 
-    const weather$ = this.pgService
-      .getWeatherSatellite$(weatherType)
-      .pipe(distinctUntilChanged((x, y) => x.shown !== y.shown));
+      combineLatest([allShown$, selectedWeather$])
+        .pipe(
+          takeUntil(this._unsub),
+          takeUntil(this._changeStyle),
+          map(([allShown, selectedWeather]) => {
+            return +(allShown && selectedWeather === weatherType);
+          })
+        )
+        .subscribe((opacity: number) => {
+          this.map.setPaintProperty(weatherType, 'raster-opacity', opacity);
+        });
 
-    combineLatest([allShown$, weather$])
-      .pipe(takeUntil(this._unsub), takeUntil(this._changeStyle))
-      .subscribe(([allShown, weather]) => {
-        let newOpacity = 0;
+      // opacity
+      const weatherOp$ = this.pgService
+        .getWeatherSatellite$(name)
+        .pipe(distinctUntilChanged((x, y) => x.opacity !== y.opacity));
 
-        if (weather.shown && allShown) {
-          newOpacity = weather.opacity / 100;
-        }
+      combineLatest([allShown$, weatherOp$])
+        .pipe(takeUntil(this._unsub), takeUntil(this._changeStyle))
+        .subscribe(([allShown, weatherOp]) => {
+          let newOpacity = 0;
 
-        this.map.setPaintProperty(weatherType, 'raster-opacity', newOpacity);
-      });
+          if (weatherOp.opacity && allShown) {
+            newOpacity = weatherOp.opacity / 100;
+          }
+          this.map.setPaintProperty(name, 'raster-opacity', newOpacity);
+        });
+
+      // this.pgService
+      //   .getWeatherSatellite$(name)
+      //   .pipe(
+      //     takeUntil(this._unsub),
+      //     takeUntil(this._changeStyle),
+      //     distinctUntilChanged((x, y) => x.opacity !== y.opacity)
+      //   )
+      //   .subscribe((weatherSatellite) => {
+      //     const newOpacity = weatherSatellite.opacity / 100;
+      //     this.map.setPaintProperty(name, 'raster-opacity', newOpacity);
+      //   });
+
+      // shown
+      const weather$ = this.pgService
+        .getWeatherSatellite$(name)
+        .pipe(distinctUntilChanged((x, y) => x.shown !== y.shown));
+
+      combineLatest([allShown$, weather$])
+        .pipe(takeUntil(this._unsub), takeUntil(this._changeStyle))
+        .subscribe(([allShown, weather]) => {
+          let newOpacity = 0;
+
+          if (weather.shown && allShown) {
+            newOpacity = weather.opacity / 100;
+          }
+
+          this.map.setPaintProperty(name, 'raster-opacity', newOpacity);
+          this.map.flyTo({
+            center: PH_DEFAULT_CENTER,
+            zoom: 4,
+            essential: true,
+          });
+        });
+    });
   }
   //
 

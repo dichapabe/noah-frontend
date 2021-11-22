@@ -348,15 +348,18 @@ export class NoahPlaygroundService {
     );
   }
 
-  setWeatherSatelliteOpacity(opacity: number, type: WeatherSatelliteType) {
+  setWeatherSatelliteOpacity(
+    opacity: number,
+    weatherType: WeatherSatelliteType
+  ) {
     const weatherSatellite: WeatherSatelliteState = {
       ...this.store.state.weatherSatellite,
     };
 
-    weatherSatellite.types[type].opacity = opacity;
+    weatherSatellite.types[weatherType].opacity = opacity;
     this.store.patch(
-      { weatherSatellite },
-      `Weather Satellite - update ${type}'s opacity to ${opacity}`
+      { [weatherType]: weatherSatellite },
+      `Weather Satellite - update ${weatherType}'s opacity to ${opacity}`
     );
   }
 
