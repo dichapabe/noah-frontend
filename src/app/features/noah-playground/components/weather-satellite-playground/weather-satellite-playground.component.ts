@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NoahPlaygroundService } from '@features/noah-playground/services/noah-playground.service';
-import { WeatherSatelliteType } from '@features/noah-playground/store/noah-playground.store';
+import {
+  WeatherSatelliteType,
+  WEATHER_SATELLITE_ARR,
+} from '@features/noah-playground/store/noah-playground.store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'noah-weather-satellite-playground',
@@ -9,29 +13,26 @@ import { WeatherSatelliteType } from '@features/noah-playground/store/noah-playg
 })
 export class WeatherSatellitePlaygroundComponent implements OnInit {
   isOpenedList;
-  weatherSatellite: WeatherSatelliteType[] = ['himawari', 'himawari-GSMAP'];
+  weatherSatellite = WEATHER_SATELLITE_ARR;
 
-  expanded = true;
-  shown = true;
+  expanded$: Observable<boolean>;
+  shown$: Observable<boolean>;
 
   constructor(private pgService: NoahPlaygroundService) {}
 
   ngOnInit(): void {
-    const { expanded, shown } = this.pgService.getWeatherSatellites();
-    this.expanded = expanded;
-    this.shown = shown;
+    this.expanded$ = this.pgService.weatherSatellitesExpanded$;
+    this.shown$ = this.pgService.weatherSatellitesShown$;
   }
 
   toggleShown(event: Event) {
     event.stopPropagation();
     event.stopImmediatePropagation();
 
-    this.shown = !this.shown;
-    this.pgService.setWeatherSatelliteProperty(this.shown, 'shown');
+    this.pgService.toggleWeatherSatelliteGroupVisibility();
   }
 
   toggleExpanded() {
-    this.expanded = !this.expanded;
-    this.pgService.setWeatherSatelliteProperty(this.expanded, 'expanded');
+    this.pgService.toggleWeatherSatelliteGroupExpansion();
   }
 }

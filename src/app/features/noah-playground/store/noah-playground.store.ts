@@ -242,7 +242,7 @@ const createInitialValue = (): NoahPlaygroundState => ({
       },
       'himawari-GSMAP': {
         shown: false,
-        opacity: 30,
+        opacity: 50,
       },
     },
   },

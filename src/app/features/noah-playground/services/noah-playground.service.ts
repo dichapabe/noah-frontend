@@ -65,6 +65,12 @@ export class NoahPlaygroundService {
     return this.store.state$.pipe(map((state) => state.weatherSatellite.shown));
   }
 
+  get weatherSatellitesExpanded$(): Observable<boolean> {
+    return this.store.state$.pipe(
+      map((state) => state.weatherSatellite.expanded)
+    );
+  }
+
   get selectedWeatherSatellite$(): Observable<WeatherSatelliteType> {
     return this.store.state$.pipe(
       map((state) => state.weatherSatellite.selectedType)
@@ -348,6 +354,14 @@ export class NoahPlaygroundService {
     );
   }
 
+  getWeatherSatelliteOpacity(weatherType: WeatherSatelliteType): number {
+    return this.store.state[weatherType].opacity;
+  }
+
+  getWeatherSatelliteShown(weatherType: WeatherSatelliteType): boolean {
+    return this.store.state[weatherType].shown;
+  }
+
   setWeatherSatelliteOpacity(
     opacity: number,
     weatherType: WeatherSatelliteType
@@ -358,32 +372,56 @@ export class NoahPlaygroundService {
 
     weatherSatellite.types[weatherType].opacity = opacity;
     this.store.patch(
-      { [weatherType]: weatherSatellite },
+      { weatherSatellite },
       `Weather Satellite - update ${weatherType}'s opacity to ${opacity}`
     );
   }
 
-  setWeatherSatelliteShown(value: boolean, type: WeatherSatelliteType) {
-    const weatherSatellite: WeatherSatelliteState = {
-      ...this.store.state.weatherSatellite,
-    };
+  // setWeatherSatelliteShown(value: boolean, type: WeatherSatelliteType) {
+  //   const weatherSatellite: WeatherSatelliteState = {
+  //     ...this.store.state.weatherSatellite,
+  //   };
 
-    weatherSatellite.types[type].shown = value;
-    this.store.patch(
-      { weatherSatellite },
-      `Weather Satellite - update ${type}'s shown to ${value}`
-    );
-  }
+  //   weatherSatellite.types[type].shown = value;
+  //   this.store.patch(
+  //     { weatherSatellite },
+  //     `Weather Satellite - update ${type}'s shown to ${value}`
+  //   );
+  // }
 
-  selectWeatherSatelliteType(type: WeatherSatelliteType): void {
+  selectWeatherSatelliteType(weatherType: WeatherSatelliteType): void {
     const weatherSatellite = {
       ...this.store.state.weatherSatellite,
     };
 
-    weatherSatellite.selectedType = type;
+    weatherSatellite.selectedType = weatherType;
     this.store.patch(
       { weatherSatellite },
-      `Select Weather Satellite type: ${type}`
+      `Select Weather Satellite type: ${weatherType}`
+    );
+  }
+
+  toggleWeatherSatelliteGroupVisibility(): void {
+    const weatherSatellite = {
+      ...this.store.state.weatherSatellite,
+    };
+
+    weatherSatellite.shown = !weatherSatellite.shown;
+    this.store.patch(
+      { weatherSatellite },
+      `toggle weather satellite visibility`
+    );
+  }
+
+  toggleWeatherSatelliteGroupExpansion(): void {
+    const weatherSatellite = {
+      ...this.store.state.weatherSatellite,
+    };
+
+    weatherSatellite.expanded = !weatherSatellite.expanded;
+    this.store.patch(
+      { weatherSatellite },
+      `toggle weather satellite expansion`
     );
   }
 

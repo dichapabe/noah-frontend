@@ -19,7 +19,7 @@
         <input
           type="checkbox"
           class="checkbox h-5 w-5 text-blue-600"
-          [checked]="shown"
+          [checked]="shown$ | async"
           (click)="toggleShown($event)"
         />
       </label>
@@ -42,7 +42,7 @@
         "
       >
         <svg
-          [ngClass]="expanded ? ' hidden ' : ' '"
+          [ngClass]="(expanded$ | async) ? ' hidden ' : ' '"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1000 1000"
           width="18"
@@ -53,7 +53,7 @@
           />
         </svg>
         <svg
-          [ngClass]="expanded ? ' ' : ' hidden '"
+          [ngClass]="(expanded$ | async) ? ' ' : ' hidden '"
           xmlns="http://www.w3.org/2000/svg"
           width="12"
           height="12"
@@ -68,7 +68,7 @@
       </button>
     </div>
   </div>
-  <div [ngClass]="expanded ? ' pt-5 ' : ' hidden '">
+  <div [ngClass]="(expanded$ | async) ? ' pt-5 ' : ' hidden '">
     <hr class="pb-4" />
     <div class="pl-6">
       <div class="items-center">

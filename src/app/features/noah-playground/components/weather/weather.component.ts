@@ -12,9 +12,9 @@ export class WeatherComponent implements OnInit {
   @Input() name: WeatherSatelliteType;
 
   selectedWeatherSatellite$: Observable<WeatherSatelliteType>;
-  shown = false;
 
-  initialOpacityValue: number = 80;
+  initialOpacityValue: number = 30;
+  shown = true;
 
   get displayName(): string {
     return this.name.replace('-', ' ');
@@ -26,16 +26,17 @@ export class WeatherComponent implements OnInit {
     // The only time we get the value from the state directly is when we're
     // initializing the value
     this.selectedWeatherSatellite$ = this.pgService.selectedWeatherSatellite$;
-    const { shown, opacity } = this.pgService.getWeatherSatellite(this.name);
-    this.shown = shown;
-    this.initialOpacityValue = opacity;
+    this.initialOpacityValue = this.pgService.getWeatherSatelliteOpacity(
+      this.name
+    );
+    this.shown = this.pgService.getWeatherSatelliteShown(this.name);
   }
 
   changeOpacity(opacity: number) {
     this.pgService.setWeatherSatelliteOpacity(opacity, this.name);
   }
 
-  selectWeatherSatellite(type: WeatherSatelliteType) {
-    this.pgService.selectWeatherSatelliteType(type);
+  selectWeatherSatellite(weatherType: WeatherSatelliteType) {
+    this.pgService.selectWeatherSatelliteType(weatherType);
   }
 }
